@@ -74,27 +74,44 @@ function mountPortfolio(root) {
   const profileTrigger = profile.querySelector("button");
   const profileLinks = find(".ind-profile-links");
   const profileActions = Array.from(profileLinks.querySelectorAll("a"));
-  const portrait = find(".ind-portrait");
   let pinned = false;
+  let profileAnimation;
+
+  function clearProfileAnimation() {
+    const animation = profileAnimation;
+    profileAnimation = undefined;
+    animation?.revert();
+  }
+
+  function createProfileAnimation() {
+    const destinations = profileActions.map(link => ({
+      x: profileLinks.clientWidth / 2 - link.offsetLeft,
+      y: profileLinks.clientHeight / 2 - link.offsetTop,
+    }));
+    const openScale = Number(getComputedStyle(profile).getPropertyValue("--portrait-open-scale"));
+
+    return motion.timeline({ paused: true, onReverseComplete: clearProfileAnimation })
+      .fromTo(profileTrigger, { scale: 1 }, { scale: openScale, duration: .36, ease: "power3.out" }, 0)
+      .fromTo(profileActions, {
+        x: i => destinations[i].x, y: i => destinations[i].y, scale: .48, autoAlpha: 0,
+      }, {
+        x: 0, y: 0, scale: 1, autoAlpha: 1, duration: .44,
+        stagger: { each: .045, from: "center" }, ease: "back.out(1.12)",
+      }, .03);
+  }
+
   function toggleProfile(open) {
     if (profile.classList.contains("is-open") === open) return;
     profile.classList.toggle("is-open", open);
     profileTrigger.setAttribute("aria-expanded", String(open));
     profileLinks.inert = !open;
     if (!canAnimate()) return;
-    motion.killTweensOf([...profileActions,portrait]);
-    const targets = profileActions.map(link => getComputedStyle(link));
-    motion.to(portrait,{scale:open?1.045:1,duration:.32,ease:"power3.out",clearProps:"transform"});
-    motion.fromTo(profileActions,{
-      xPercent:-50,yPercent:-50,x:i=>open?0:parseFloat(targets[i].getPropertyValue("--fan-x")),
-      y:i=>open?0:parseFloat(targets[i].getPropertyValue("--fan-y")),scale:open?.55:1,autoAlpha:open?0:1
-    },{
-      xPercent:-50,yPercent:-50,x:i=>open?parseFloat(targets[i].getPropertyValue("--fan-x")):0,
-      y:i=>open?parseFloat(targets[i].getPropertyValue("--fan-y")):0,
-      rotation:i=>open?parseFloat(targets[i].getPropertyValue("--fan-rotate")):0,
-      scale:open?1:.55,autoAlpha:open?1:0,duration:open?.44:.28,stagger:open?.028:0,
-      ease:open?"back.out(1.15)":"power2.inOut",clearProps:"transform,opacity,visibility"
-    });
+    if (open) {
+      profileAnimation ??= createProfileAnimation();
+      profileAnimation.play();
+    } else {
+      profileAnimation?.reverse();
+    }
   }
   listen(profile,"pointerenter", event => { if (event.pointerType === "mouse" && fine.matches) toggleProfile(true); });
   listen(profile,"pointerleave", () => { if (!pinned && !profileLinks.contains(document.activeElement)) toggleProfile(false); });
@@ -190,18 +207,19 @@ function mountPortfolio(root) {
     });
   });
 
-  function openProjectDetails(hash) {
+  function openLinkedDetails(hash) {
     const target = document.getElementById(hash.slice(1));
     if (target?.matches("details.ind-project-notes")) target.open = true;
+    if (target?.matches(".ind-employer-button[aria-expanded=false]")) target.click();
   }
 
   listen(root, "click", event => {
     if (event.defaultPrevented || event.shiftKey || event.metaKey || event.ctrlKey || event.altKey) return;
     const link = event.target.closest("a[data-open]");
-    if (link) openProjectDetails(link.hash);
+    if (link) openLinkedDetails(link.hash);
   });
-  listen(window, "hashchange", () => openProjectDetails(window.location.hash));
-  openProjectDetails(window.location.hash);
+  listen(window, "hashchange", () => openLinkedDetails(window.location.hash));
+  openLinkedDetails(window.location.hash);
 
   if (!motion) return;
   const media=motion.matchMedia();
@@ -265,14 +283,15 @@ function mountPortfolio(root) {
       if(!isIntersecting)return;
       seen.add(target);observer.unobserve(target);context.rise(target);
     }),{threshold:.20});
-    root.querySelectorAll(".ind-companies,.ind-note .ind-split,.ind-capabilities,.ind-assistant,.ind-footer").forEach(el=>{if(!seen.has(el))observer.observe(el);});
+    root.querySelectorAll(".ind-companies,.ind-note .ind-split,.ind-capabilities,.ind-project-heading,.ind-assistant,.ind-highlights,.ind-footer").forEach(el=>{if(!seen.has(el))observer.observe(el);});
     return ()=>{
       observer.disconnect();
       interact.abort();
       replay.hidden=true;
       replay.removeEventListener("click",play);
-      motion.killTweensOf([hoverEmployer,preview,portrait,...profileActions,nav,contact,logo,name,selectedEmployer]);
-      motion.set([hoverEmployer,preview,portrait,...profileActions,nav,contact,logo,name,selectedEmployer],{clearProps:"transform,opacity,visibility"});
+      clearProfileAnimation();
+      motion.killTweensOf([hoverEmployer,preview,nav,contact,logo,name,selectedEmployer]);
+      motion.set([hoverEmployer,preview,nav,contact,logo,name,selectedEmployer],{clearProps:"transform,opacity,visibility"});
     };
   },root);
 
@@ -282,6 +301,7 @@ function mountPortfolio(root) {
     listeners.abort();
     cancelAnimationFrame(scrollFrame);
     media.revert();
-    motion.killTweensOf([hoverEmployer, preview, portrait, ...profileActions, nav, contact, logo, name, selectedEmployer]);
+    clearProfileAnimation();
+    motion.killTweensOf([hoverEmployer, preview, nav, contact, logo, name, selectedEmployer]);
   };
 }

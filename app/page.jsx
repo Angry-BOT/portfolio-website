@@ -1,6 +1,15 @@
 import PortfolioAssistant from "./portfolio-assistant";
 import PortfolioInteractions from "./portfolio-interactions";
+import HyderabadTime from "./hyderabad-time";
+import PortfolioIcon from "./portfolio-icon";
 import { resumeUrl, tCrawlOutcome } from "./assistant-content";
+
+const shortcuts = [
+  { label: "Work", icon: "work", href: "#ind-project-index" },
+  { label: "GitHub", icon: "github", href: "https://github.com/Angry-BOT" },
+  { label: "Email", icon: "email", href: "mailto:shailo199925@gmail.com" },
+  { label: "LinkedIn", icon: "linkedin", href: "https://in.linkedin.com/in/shaileshdas12" },
+];
 
 function Header() {
   return (
@@ -12,7 +21,10 @@ function Header() {
         <a href="#ind-contact">Contact</a>
       </nav>
       <a className="ind-quick-contact" href="#ind-contact" inert><img src="/portfolio/shailesh-das-185966a.jpg" alt="" />{"Let’s talk "}<span aria-hidden="true">↗</span></a>
-      <a className="ind-resume" href={resumeUrl}>{"Résumé "}<span aria-hidden="true">↗</span></a>
+      <div className="ind-utility">
+        <p><span>Hyderabad</span><HyderabadTime /></p>
+        <a className="ind-resume" href={resumeUrl}><PortfolioIcon name="document" />Résumé <span aria-hidden="true">↗</span></a>
+      </div>
     </header>
   );
 }
@@ -23,14 +35,16 @@ function Hero() {
       <div className="ind-ambient" aria-hidden="true"></div>
       <div className="ind-profile">
         <button type="button" className="ind-profile-trigger" aria-label="Shailesh Das, profile links" aria-expanded="false" aria-controls="ind-profile-links">
-          <img className="ind-portrait" src="/portfolio/shailesh-das-185966a.jpg" width="130" height="145" alt="" />
+          <img className="ind-portrait" src="/portfolio/shailesh-das-185966a.jpg" width="152" height="176" alt="" />
           <span className="ind-online" aria-hidden="true"></span>
         </button>
         <div className="ind-profile-links" id="ind-profile-links" inert>
-          <a href="#ind-project-index">Work</a>
-          <a href="https://github.com/Angry-BOT">GitHub</a>
-          <a href="https://in.linkedin.com/in/shaileshdas12">LinkedIn</a>
-          <a href="mailto:shailo199925@gmail.com">Email</a>
+          {shortcuts.map(({ label, icon, href }) => (
+            <a key={label} href={href} className={`ind-shortcut ind-shortcut-${icon}`}>
+              <PortfolioIcon name={icon} />
+              <span>{label}</span>
+            </a>
+          ))}
         </div>
       </div>
       <p className="ind-label ind-intro">SOFTWARE ENGINEER · HYDERABAD</p>
@@ -43,7 +57,7 @@ function Hero() {
 function Experience() {
   return (
     <section className="ind-shell ind-companies" id="experience" aria-labelledby="ind-companies">
-      <h2 id="ind-companies">Experience I've</h2>
+      <h2 id="ind-companies" className="ind-label">Companies I’ve worked with</h2>
       <ul className="ind-employers">
         <li>
           <button type="button" className="ind-employer-button" id="ind-company-tmus" data-employer="#ind-role-tmus" aria-expanded="false" aria-controls="ind-employer-details">
@@ -96,21 +110,18 @@ function Experience() {
   );
 }
 
-function Approach() {
+function Introduction() {
   return (
     <section className="ind-note" id="about" aria-labelledby="ind-about-title">
       <div className="ind-shell ind-split" id="ind-about">
-        <div>
-          <p className="ind-label">MY APPROACH TO AGENTS</p>
-          <h2 id="ind-about-title">
-            <span data-word="">Give</span>{" "}
-            <span data-word="">agents</span>{" "}
-            <span data-word="">a job.</span>
-            <br />
-            <em><span data-word="">Give</span>{" "}<span data-word="">people</span>{" "}<span data-word="">control.</span></em>
-          </h2>
+        <div className="ind-introduction-lead">
+          <p className="ind-label">Introduction</p>
+          <h2 id="ind-about-title">I build tools that make complex work <em>easier to verify.</em></h2>
         </div>
-        <p className="ind-copy">I like agents that work within a clear scope, show their evidence, and leave consequential decisions with the people who own them.</p>
+        <div className="ind-introduction-copy">
+          <p>I’m Shailesh Das, a software engineer based in Hyderabad. My work spans enterprise payroll, influencer marketing, and post-release QA for web and mobile apps.</p>
+          <p>I give agents a clear job and make their evidence easy to inspect. The people who own the outcome should have the context and authority to decide what happens next.</p>
+        </div>
       </div>
     </section>
   );
@@ -180,15 +191,32 @@ function Capabilities() {
   );
 }
 
+const projects = [
+  { name: "T-Crawl", icon: "crawl", tone: "ind-indigo-icon", type: "Post-release QA", result: "42% faster bug finding", href: "#ind-tcrawl-notes", art: "#ind-art-tcrawl" },
+  { name: "Nordetect", icon: "sensor", tone: "ind-mint-icon", type: "Agricultural sensing", result: "Sensor trends and threshold alerts", href: "https://github.com/Angry-BOT/nordetect-app", art: "#ind-art-nordetect" },
+  { name: "Tractiv", icon: "location", tone: "ind-lilac-icon", type: "Personal safety prototype", result: "Emergency location sharing", href: "#ind-tractiv-notes", art: "#ind-art-tractiv" },
+];
+
 function Projects() {
   return (
     <section className="ind-shell ind-project-index" aria-labelledby="ind-project-index">
-      <h2 id="ind-project-index">{"Things I’ve "}
-        <em>built.</em>
-      </h2>
-      <a href="#ind-tcrawl-notes" data-open="" data-preview="#ind-art-tcrawl"><span className="ind-icon" aria-hidden="true">⌘</span><strong>T-Crawl</strong><span>Post-release QA agent</span><span aria-hidden="true">↗</span></a>
-      <a href="https://github.com/Angry-BOT/nordetect-app" data-preview="#ind-art-nordetect"><span className="ind-icon" aria-hidden="true">◫</span><strong>Nordetect</strong><span>Agricultural sensor dashboard</span><span aria-hidden="true">↗</span></a>
-      <a href="#ind-tractiv-notes" data-open="" data-preview="#ind-art-tractiv"><span className="ind-icon" aria-hidden="true">⌖</span><strong>Tractiv</strong><span>Personal safety prototype</span><span aria-hidden="true">↗</span></a>
+      <header className="ind-project-heading">
+        <h2 id="ind-project-index">Things I’ve <em>built.</em></h2>
+        <p>Software for release checks, field readings, and personal safety.</p>
+      </header>
+      <ul className="ind-project-rows">
+        {projects.map(({ name, icon, tone, type, result, href, art }) => (
+          <li key={name}>
+            <a className="ind-project-row" href={href} data-open={href.startsWith("#") ? "" : undefined} data-preview={art}>
+              <span className={`ind-project-icon ${tone}`}><PortfolioIcon name={icon} /></span>
+              <strong>{name}</strong>
+              <span className="ind-project-result">{result}</span>
+              <span className="ind-project-type">{type}</span>
+              <span className="ind-project-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        ))}
+      </ul>
       <details className="ind-project-notes" id="ind-tcrawl-notes">
         <summary>T-Crawl details</summary>
         <p>I led development of T-Crawl, a prompt-driven QA agent that explores web, iOS, and Android apps and reports findings for review.</p>
@@ -247,22 +275,54 @@ function Assistant() {
 
 function Contact() {
   return (
-    <div className="ind-dark" id="contact">
-      <footer id="ind-contact" className="ind-shell ind-footer ind-rule">
-        <div className="ind-footer-art" aria-hidden="true">S
-          <i></i>D
-        </div>
-        <h2>
-          <a className="ind-footer-title" href="mailto:shailo199925@gmail.com" aria-label="Let’s build something. Email Shailesh Das."><span aria-hidden="true"><span className="ind-word"><span className="ind-letter"><span className="ind-glyph">L</span></span><span className="ind-letter"><span className="ind-glyph">e</span></span><span className="ind-letter"><span className="ind-glyph">t</span></span><span className="ind-letter"><span className="ind-glyph">’</span></span><span className="ind-letter"><span className="ind-glyph">s</span></span></span>{" "}<span className="ind-word"><span className="ind-letter"><span className="ind-glyph">b</span></span><span className="ind-letter"><span className="ind-glyph">u</span></span><span className="ind-letter"><span className="ind-glyph">i</span></span><span className="ind-letter"><span className="ind-glyph">l</span></span><span className="ind-letter"><span className="ind-glyph">d</span></span></span></span><em aria-hidden="true"><span className="ind-word"><span className="ind-letter"><span className="ind-glyph">s</span></span><span className="ind-letter"><span className="ind-glyph">o</span></span><span className="ind-letter"><span className="ind-glyph">m</span></span><span className="ind-letter"><span className="ind-glyph">e</span></span><span className="ind-letter"><span className="ind-glyph">t</span></span><span className="ind-letter"><span className="ind-glyph">h</span></span><span className="ind-letter"><span className="ind-glyph">i</span></span><span className="ind-letter"><span className="ind-glyph">n</span></span><span className="ind-letter"><span className="ind-glyph">g</span></span></span></em></a>
-        </h2>
-        <div className="ind-contact">
-          <a href="mailto:shailo199925@gmail.com">Email ↗</a>
-          <a href="https://github.com/Angry-BOT">GitHub ↗</a>
-          <a href="https://in.linkedin.com/in/shaileshdas12">LinkedIn ↗</a>
-        </div>
-        <p className="ind-footer-credit">© 2026 SHAILESH DAS</p>
-      </footer>
+    <div className="ind-dark">
+      <CareerHighlights />
+      <div id="contact">
+        <footer id="ind-contact" className="ind-shell ind-footer ind-rule">
+          <div className="ind-footer-art" aria-hidden="true">S
+            <i></i>D
+          </div>
+          <h2>
+            <a className="ind-footer-title" href="mailto:shailo199925@gmail.com" aria-label="Let’s build something. Email Shailesh Das."><span aria-hidden="true"><span className="ind-word"><span className="ind-letter"><span className="ind-glyph">L</span></span><span className="ind-letter"><span className="ind-glyph">e</span></span><span className="ind-letter"><span className="ind-glyph">t</span></span><span className="ind-letter"><span className="ind-glyph">’</span></span><span className="ind-letter"><span className="ind-glyph">s</span></span></span>{" "}<span className="ind-word"><span className="ind-letter"><span className="ind-glyph">b</span></span><span className="ind-letter"><span className="ind-glyph">u</span></span><span className="ind-letter"><span className="ind-glyph">i</span></span><span className="ind-letter"><span className="ind-glyph">l</span></span><span className="ind-letter"><span className="ind-glyph">d</span></span></span></span><em aria-hidden="true"><span className="ind-word"><span className="ind-letter"><span className="ind-glyph">s</span></span><span className="ind-letter"><span className="ind-glyph">o</span></span><span className="ind-letter"><span className="ind-glyph">m</span></span><span className="ind-letter"><span className="ind-glyph">e</span></span><span className="ind-letter"><span className="ind-glyph">t</span></span><span className="ind-letter"><span className="ind-glyph">h</span></span><span className="ind-letter"><span className="ind-glyph">i</span></span><span className="ind-letter"><span className="ind-glyph">n</span></span><span className="ind-letter"><span className="ind-glyph">g</span></span></span></em></a>
+          </h2>
+          <div className="ind-contact">
+            <a href="mailto:shailo199925@gmail.com">Email ↗</a>
+            <a href="https://github.com/Angry-BOT">GitHub ↗</a>
+            <a href="https://in.linkedin.com/in/shaileshdas12">LinkedIn ↗</a>
+          </div>
+          <p className="ind-footer-credit">© 2026 SHAILESH DAS</p>
+        </footer>
+      </div>
     </div>
+  );
+}
+
+function CareerHighlights() {
+  return (
+    <section className="ind-shell ind-highlights" aria-labelledby="ind-highlights-title">
+      <div className="ind-highlights-intro">
+        <p className="ind-label">Career highlights</p>
+        <h2 id="ind-highlights-title">Work with <em>measurable impact.</em></h2>
+      </div>
+      <dl className="ind-highlight-grid">
+        <div>
+          <dt>Faster post-release bug finding</dt>
+          <dd><a href="#ind-tcrawl-notes" data-open="">42% <span aria-hidden="true">↗</span></a></dd>
+        </div>
+        <div>
+          <dt>Less time spent on web posting</dt>
+          <dd><a href="#ind-company-highradius" data-open="">~40% <span aria-hidden="true">↗</span></a></dd>
+        </div>
+        <div>
+          <dt>Customers supported by backend automation</dt>
+          <dd><a href="#ind-company-highradius" data-open="">20+ <span aria-hidden="true">↗</span></a></dd>
+        </div>
+        <div>
+          <dt>Computer engineering</dt>
+          <dd>B.Tech</dd>
+        </div>
+      </dl>
+    </section>
   );
 }
 
@@ -292,11 +352,11 @@ function DesignSystem() {
           </div>
           <div>
             <h3>Components and states</h3>
-            <p>Center the navigation pill. Use a distinct cover color for each project, with titles and outcomes in the captions. Employer tiles open descriptions with a click, tap, or Enter, and show a pointer-following card on desktop. Project details use native disclosure. At 680 px and below, stack capability cards and assistant content.</p>
+            <p>Center the navigation pill and right-align the location, local time, and résumé. Employer tiles open descriptions on click, tap, or Enter. Project rows pair custom icons with a category and a result. Career figures link to their supporting project or employer details. At 680 px and below, stack the introduction, capability cards, and assistant.</p>
           </div>
           <div>
             <h3>Motion</h3>
-            <p>On hover, individual letters in the hero and footer travel up to 13 px and settle in 630 ms. Portrait shortcuts fan out with 28 ms stagger and stay usable on touch. Capability tags reveal with 43 ms stagger. The full name swaps to SD in the compact navigation, and the contact pill changes contrast over the dark section.</p>
+            <p>On hover, individual letters in the hero and footer travel up to 13 px and settle in 630 ms. The portrait contracts to 74% as shortcuts fan out from the nearest pair with a 45 ms stagger. Tap or Enter opens the same links. Capability tags reveal with 43 ms stagger. The name swaps to SD in compact navigation.</p>
             <p>GSAP animates the opposing headline entrance, glyph response, portrait links, capability tags, pointer previews, and navigation swap. Employer previews fade and scale in over 280 ms. Reduced motion keeps all controls usable with instant transitions.</p>
           </div>
         </div>
@@ -312,7 +372,7 @@ export default function PortfolioPage() {
       <main id="ind-home">
         <Hero />
         <Experience />
-        <Approach />
+        <Introduction />
         <Capabilities />
         <Projects />
         <Assistant />
