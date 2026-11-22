@@ -164,24 +164,44 @@ function mountPortfolio(root) {
 
   const index=find(".ind-project-index");
   const preview=find(".ind-hover-preview");
+  function movePreview(event, immediate = false) {
+    const bounds = index.getBoundingClientRect();
+    const x = Math.max(0, Math.min(event.clientX - bounds.left + 24, bounds.width - preview.offsetWidth));
+    const y = Math.max(-80, Math.min(event.clientY - bounds.top - preview.offsetHeight * .78, bounds.height - preview.offsetHeight));
+    if (immediate) motion.set(preview, { x, y });
+    else motion.to(preview, { x, y, duration: .27, ease: "power3.out", overwrite: "auto" });
+  }
+  const canPreview = event => canAnimate() && fine.matches && event.pointerType === "mouse";
+
   index.querySelectorAll("[data-preview]").forEach(row => {
-    listen(row,"pointerenter", event => {
-      if (!canAnimate() || !fine.matches || event.pointerType!=="mouse") return;
+    listen(row, "pointerenter", event => {
+      if (!canPreview(event)) return;
       copyContent(preview, find(row.dataset.preview));
-      motion.fromTo(preview,{autoAlpha:0,scale:.965},{autoAlpha:1,scale:1,duration:.24,ease:"power3.out",overwrite:"auto"});
+      movePreview(event, true);
+      motion.fromTo(preview, { autoAlpha: 0, scale: .965 }, { autoAlpha: 1, scale: 1, duration: .24, ease: "power3.out", overwrite: "auto" });
+    });
+    listen(row, "pointermove", event => {
+      if (canPreview(event)) movePreview(event);
+    });
+    listen(row, "pointerleave", () => {
+      if (!canAnimate()) return;
+      motion.killTweensOf(preview);
+      motion.to(preview, { autoAlpha: 0, duration: .16, overwrite: "auto" });
     });
   });
-  listen(index,"pointermove", event => {
-    if (!canAnimate() || !fine.matches) return;
-    const bounds=index.getBoundingClientRect();
-    const x=Math.max(0,Math.min(event.clientX-bounds.left+24,bounds.width-preview.offsetWidth));
-    const y=Math.max(-80,Math.min(event.clientY-bounds.top-preview.offsetHeight*.78,bounds.height-preview.offsetHeight));
-    motion.to(preview,{x,y,duration:.27,ease:"power3.out",overwrite:"auto"});
+
+  function openProjectDetails(hash) {
+    const target = document.getElementById(hash.slice(1));
+    if (target?.matches("details.ind-project-notes")) target.open = true;
+  }
+
+  listen(root, "click", event => {
+    if (event.defaultPrevented || event.shiftKey || event.metaKey || event.ctrlKey || event.altKey) return;
+    const link = event.target.closest("a[data-open]");
+    if (link) openProjectDetails(link.hash);
   });
-  listen(index,"pointerleave", () => { if(motion) motion.to(preview,{autoAlpha:0,duration:canAnimate()?.16:0,overwrite:"auto"}); });
-  root.querySelectorAll("[data-open]").forEach(link=>listen(link,"click",()=>{
-    root.querySelector(link.dataset.open).open=true;
-  }));
+  listen(window, "hashchange", () => openProjectDetails(window.location.hash));
+  openProjectDetails(window.location.hash);
 
   if (!motion) return;
   const media=motion.matchMedia();

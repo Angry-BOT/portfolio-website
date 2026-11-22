@@ -26,7 +26,9 @@ export default function PortfolioAssistant() {
             <>
               <p className="assistant-question">{turn.prompt}</p>
               <p>{turn.answer}</p>
-              {turn.sources.length > 0 && <ul>{turn.sources.map(source => <li key={source.href}><a href={source.href}>{source.label}</a></li>)}</ul>}
+              {turn.sources.length > 0 && <ul>{turn.sources.map(source => (
+                <li key={source.href}><a href={source.href} data-open={source.openDetails ? "" : undefined}>{source.label}</a></li>
+              ))}</ul>}
             </>
           )}
         </div>

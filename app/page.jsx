@@ -1,5 +1,6 @@
 import PortfolioAssistant from "./portfolio-assistant";
 import PortfolioInteractions from "./portfolio-interactions";
+import { resumeUrl, tCrawlOutcome } from "./assistant-content";
 
 function Header() {
   return (
@@ -11,7 +12,7 @@ function Header() {
         <a href="#ind-contact">Contact</a>
       </nav>
       <a className="ind-quick-contact" href="#ind-contact" inert><img src="/portfolio/shailesh-das-185966a.jpg" alt="" />{"Let’s talk "}<span aria-hidden="true">↗</span></a>
-      <a className="ind-resume" href="https://drive.google.com/file/d/1mvgj97akaX7njDnKi-RsIO_-erzbAaFj/view?usp=sharing">{"Résumé "}<span aria-hidden="true">↗</span></a>
+      <a className="ind-resume" href={resumeUrl}>{"Résumé "}<span aria-hidden="true">↗</span></a>
     </header>
   );
 }
@@ -41,7 +42,7 @@ function Hero() {
 
 function Experience() {
   return (
-    <section className="ind-shell ind-companies" aria-labelledby="ind-companies">
+    <section className="ind-shell ind-companies" id="experience" aria-labelledby="ind-companies">
       <h2 id="ind-companies">Experience I've</h2>
       <ul className="ind-employers">
         <li>
@@ -74,7 +75,7 @@ function Experience() {
       <div hidden id="ind-role-tmus">
         <h3>TMUS Global Solutions</h3>
         <p className="ind-role">Current · Agentic QA</p>
-        <p>Led development of T-Crawl, an autonomous agent that tests web, iOS, and Android flows from a prompt and reports bugs for review. It helped teams find bugs 42% faster after production deployments on T-Mobile apps and websites.</p>
+        <p>Led development of T-Crawl, an autonomous agent that tests web, iOS, and Android flows from a prompt and reports bugs for review. {tCrawlOutcome}</p>
       </div>
       <div hidden id="ind-role-meltwater">
         <h3>Meltwater</h3>
@@ -97,8 +98,8 @@ function Experience() {
 
 function Approach() {
   return (
-    <section className="ind-note" id="ind-about" aria-labelledby="ind-about-title">
-      <div className="ind-shell ind-split">
+    <section className="ind-note" id="about" aria-labelledby="ind-about-title">
+      <div className="ind-shell ind-split" id="ind-about">
         <div>
           <p className="ind-label">MY APPROACH TO AGENTS</p>
           <h2 id="ind-about-title">
@@ -117,7 +118,7 @@ function Approach() {
 
 function Capabilities() {
   return (
-    <section className="ind-shell ind-capabilities" aria-labelledby="ind-capabilities">
+    <section className="ind-shell ind-capabilities" id="skills" aria-labelledby="ind-capabilities">
       <h2 id="ind-capabilities">{"How I "}
         <em>build.</em>
       </h2>
@@ -137,7 +138,7 @@ function Capabilities() {
           </summary>
           <div className="ind-cap-detail">
             <p>Turn a release-check prompt into a run that explores the flow and surfaces findings for the team to review.</p>
-            <a href="#ind-tcrawl-notes" data-open="#ind-tcrawl-notes">{"See the T-Crawl project "}<span aria-hidden="true">↗</span></a>
+            <a href="#ind-tcrawl-notes" data-open="">{"See the T-Crawl project "}<span aria-hidden="true">↗</span></a>
           </div>
         </details>
         <details className="ind-visual-cap" style={{"--cap-bg": "#c5e4d8"}}>
@@ -185,12 +186,13 @@ function Projects() {
       <h2 id="ind-project-index">{"Things I’ve "}
         <em>built.</em>
       </h2>
-      <a href="#ind-tcrawl-notes" data-open="#ind-tcrawl-notes" data-preview="#ind-art-tcrawl"><span className="ind-icon" aria-hidden="true">⌘</span><strong>T-Crawl</strong><span>Post-release QA agent</span><span aria-hidden="true">↗</span></a>
+      <a href="#ind-tcrawl-notes" data-open="" data-preview="#ind-art-tcrawl"><span className="ind-icon" aria-hidden="true">⌘</span><strong>T-Crawl</strong><span>Post-release QA agent</span><span aria-hidden="true">↗</span></a>
       <a href="https://github.com/Angry-BOT/nordetect-app" data-preview="#ind-art-nordetect"><span className="ind-icon" aria-hidden="true">◫</span><strong>Nordetect</strong><span>Agricultural sensor dashboard</span><span aria-hidden="true">↗</span></a>
-      <a href="#ind-tractiv-notes" data-open="#ind-tractiv-notes" data-preview="#ind-art-tractiv"><span className="ind-icon" aria-hidden="true">⌖</span><strong>Tractiv</strong><span>Personal safety prototype</span><span aria-hidden="true">↗</span></a>
+      <a href="#ind-tractiv-notes" data-open="" data-preview="#ind-art-tractiv"><span className="ind-icon" aria-hidden="true">⌖</span><strong>Tractiv</strong><span>Personal safety prototype</span><span aria-hidden="true">↗</span></a>
       <details className="ind-project-notes" id="ind-tcrawl-notes">
         <summary>T-Crawl details</summary>
-        <p>A prompt-driven QA agent that explores web, iOS, and Android apps and reports findings for review.</p>
+        <p>I led development of T-Crawl, a prompt-driven QA agent that explores web, iOS, and Android apps and reports findings for review.</p>
+        <p>{tCrawlOutcome}</p>
         <img src="/portfolio/project-thumbnail-ab8bccb.jpg" alt="Illustrative QA run showing a sample Android finding" className="ind-case-thumb" loading="lazy" width="640" height="420" />
       </details>
       <details className="ind-project-notes" id="ind-tractiv-notes">
@@ -245,7 +247,7 @@ function Assistant() {
 
 function Contact() {
   return (
-    <div className="ind-dark">
+    <div className="ind-dark" id="contact">
       <footer id="ind-contact" className="ind-shell ind-footer ind-rule">
         <div className="ind-footer-art" aria-hidden="true">S
           <i></i>D

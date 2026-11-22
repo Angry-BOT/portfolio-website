@@ -5,7 +5,6 @@ export const metadata = {
   title: "Shailesh Das | Software Engineer",
   description:
     "Shailesh Das builds products and AI agents for real workflows. Explore his engineering work, experience, and projects.",
-  icons: { icon: "/favicon.ico" },
   openGraph: {
     type: "website",
     title: "Shailesh Das | Software Engineer",
