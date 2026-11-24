@@ -1,5 +1,6 @@
 import "./portfolio.css";
 import "./assistant.css";
+import { initializeTheme } from "./theme-preference";
 
 export const metadata = {
   title: "Shailesh Das | Software Engineer",
@@ -14,8 +15,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <script dangerouslySetInnerHTML={{ __html: initializeTheme }} />
+        {children}
+      </body>
     </html>
   );
 }

@@ -2,6 +2,7 @@ import PortfolioAssistant from "./portfolio-assistant";
 import PortfolioInteractions from "./portfolio-interactions";
 import HyderabadTime from "./hyderabad-time";
 import PortfolioIcon from "./portfolio-icon";
+import ThemeToggle from "./theme-toggle";
 import { resumeUrl, tCrawlOutcome } from "./assistant-content";
 
 const shortcuts = [
@@ -23,7 +24,10 @@ function Header() {
       <a className="ind-quick-contact" href="#ind-contact" inert><img src="/portfolio/shailesh-das-185966a.jpg" alt="" />{"Let’s talk "}<span aria-hidden="true">↗</span></a>
       <div className="ind-utility">
         <p><span>Hyderabad</span><HyderabadTime /></p>
-        <a className="ind-resume" href={resumeUrl}><PortfolioIcon name="document" />Résumé <span aria-hidden="true">↗</span></a>
+        <div className="ind-utility-actions">
+          <a className="ind-resume" href={resumeUrl}><PortfolioIcon name="document" />Résumé <span aria-hidden="true">↗</span></a>
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );
@@ -352,7 +356,7 @@ function DesignSystem() {
           </div>
           <div>
             <h3>Components and states</h3>
-            <p>Center the navigation pill and right-align the location, local time, and résumé. Employer tiles open descriptions on click, tap, or Enter. Project rows pair custom icons with a category and a result. Career figures link to their supporting project or employer details. At 680 px and below, stack the introduction, capability cards, and assistant.</p>
+            <p>Center the navigation pill and right-align the location, local time, résumé, and theme button. The theme starts with the device preference and remembers a manual choice. Employer tiles open descriptions on click, tap, or Enter. Project rows pair custom icons with a category and a result. Career figures link to their supporting project or employer details.</p>
           </div>
           <div>
             <h3>Motion</h3>
