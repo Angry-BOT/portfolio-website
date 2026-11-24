@@ -1,11 +1,12 @@
 import CareerFields from "./career-fields";
-import PortfolioAssistant from "./portfolio-assistant";
 import PortfolioInteractions from "./portfolio-interactions";
 import HyderabadTime from "./hyderabad-time";
 import PortfolioIcon from "./portfolio-icon";
 import ThemeToggle from "./theme-toggle";
 import Workflow from "./workflow";
-import { resumeUrl, tCrawlOutcome } from "./assistant-content";
+
+const resumeUrl = "https://drive.google.com/file/d/1mvgj97akaX7njDnKi-RsIO_-erzbAaFj/view?usp=sharing";
+const tCrawlOutcome = "T-Crawl helped teams find bugs 42% faster after production deployments on T-Mobile apps and websites.";
 
 const contactLinks = [
   { label: "Email", icon: "email", href: "mailto:shailo199925@gmail.com" },
@@ -232,19 +233,6 @@ function Projects() {
   );
 }
 
-function Assistant() {
-  return (
-    <section className="ind-shell ind-assistant ind-split" aria-labelledby="ind-ask">
-      <div>
-        <p className="ind-label">PORTFOLIO ASSISTANT</p>
-        <h2 id="ind-ask" data-text-reveal><span>Ask about</span><br /><em>my work.</em></h2>
-        <p className="ind-copy">Ask a question and explore the public sources behind the answer.</p>
-      </div>
-      <PortfolioAssistant />
-    </section>
-  );
-}
-
 function Contact() {
   return (
     <>
@@ -295,7 +283,6 @@ export default function PortfolioPage() {
         <Introduction />
         <Capabilities />
         <Projects />
-        <Assistant />
         <Contact />
       </main>
       <PortfolioInteractions />

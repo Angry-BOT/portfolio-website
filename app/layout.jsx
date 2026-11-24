@@ -1,5 +1,4 @@
 import "./portfolio.css";
-import "./assistant.css";
 import { initializeTheme } from "./theme-preference";
 
 export const metadata = {

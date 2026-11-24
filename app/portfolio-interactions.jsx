@@ -251,11 +251,6 @@ function mountPortfolio(root) {
     if (target?.matches(".ind-employer-button[aria-expanded=false]")) target.click();
   }
 
-  listen(root, "click", event => {
-    if (event.defaultPrevented || event.shiftKey || event.metaKey || event.ctrlKey || event.altKey) return;
-    const link = event.target.closest("a[data-open]");
-    if (link) openLinkedDetails(link.hash);
-  });
   listen(window, "hashchange", () => openLinkedDetails(window.location.hash));
   openLinkedDetails(window.location.hash);
 
