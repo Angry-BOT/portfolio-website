@@ -28,7 +28,7 @@ function Header() {
       </nav>
       <div className="ind-utility">
         <p><span>Hyderabad</span><HyderabadTime /></p>
-        <a className="ind-resume" href={resumeUrl}><PortfolioIcon name="document" />Résumé <span aria-hidden="true">↗</span></a>
+        <a className="ind-resume" href={resumeUrl} aria-label="Résumé"><PortfolioIcon name="document" /><span className="ind-resume-label">Résumé <span aria-hidden="true">↗</span></span></a>
       </div>
     </header>
   );
@@ -66,25 +66,25 @@ function Experience() {
       <ul className="ind-employers">
         <li>
           <button type="button" className="ind-employer-button" id="ind-company-tmus" data-employer="#ind-role-tmus" aria-expanded="false" aria-controls="ind-employer-details">
-            <img src="/portfolio/t-mobile-wordmark-c7e128b.png" alt="" />
+            <img className="ind-employer-logo" src="/portfolio/t-mobile-wordmark-c7e128b.png" alt="" />
             <span>TMUS Global Solutions</span>
           </button>
         </li>
         <li>
           <button type="button" className="ind-employer-button" id="ind-company-meltwater" data-employer="#ind-role-meltwater" aria-expanded="false" aria-controls="ind-employer-details">
-            <img src="/assets/mw-logo.svg" alt="" />
+            <img className="ind-employer-logo" src="/assets/mw_logo_blue_stacked.svg" alt="" />
             <span>Meltwater</span>
           </button>
         </li>
         <li>
           <button type="button" className="ind-employer-button" id="ind-company-adp" data-employer="#ind-role-adp" aria-expanded="false" aria-controls="ind-employer-details">
-            <img src="/assets/adp-logo.svg" alt="" />
+            <img className="ind-employer-logo" src="/assets/adp-logo.svg" alt="" />
             <span>ADP</span>
           </button>
         </li>
         <li>
           <button type="button" className="ind-employer-button" id="ind-company-highradius" data-employer="#ind-role-highradius" aria-expanded="false" aria-controls="ind-employer-details">
-            <img src="/assets/hrc-logo.svg" alt="" />
+            <img className="ind-employer-logo" src="/assets/hrc-logo.svg" alt="" />
             <span>HighRadius</span>
           </button>
         </li>
@@ -93,23 +93,32 @@ function Experience() {
       <div className="ind-employer-card ind-employer-float" inert aria-hidden="true"></div>
       <div hidden id="ind-role-tmus">
         <h3>TMUS Global Solutions</h3>
-        <p className="ind-role">Current · Agentic QA</p>
-        <p>Led development of T-Crawl, an autonomous agent that tests web, iOS, and Android flows from a prompt and reports bugs for review. {tCrawlOutcome}</p>
+        <p className="ind-role">Senior Software Engineer · EDX AI Team</p>
+        <p className="ind-role-dates">Dec 2025–present · Hyderabad, hybrid</p>
+        <p>Led development of T-Crawl, an autonomous QA agent for T-Mobile apps and websites. A tester describes what to check, and the agent explores the flow on web, iOS, or Android and reports bugs for human review.</p>
+        <p>{tCrawlOutcome}</p>
       </div>
       <div hidden id="ind-role-meltwater">
         <h3>Meltwater</h3>
-        <p className="ind-role">Software Engineer II · Influencer marketing</p>
-        <p>Maintained and improved an influencer marketing platform that supports AI-enabled search, payment tracking, and campaigns. Researched new features for the wider Meltwater product suite.</p>
+        <p className="ind-role">Software Engineer II · Klear</p>
+        <p className="ind-role-dates">Jan–Nov 2025 · Hyderabad, hybrid</p>
+        <p>Maintained and improved Klear, Meltwater’s influencer marketing platform for discovering creators with AI-assisted search, managing campaigns, and tracking creator payments.</p>
+        <p>Conducted research and development on new features for the wider Meltwater product suite.</p>
       </div>
       <div hidden id="ind-role-adp">
         <h3>ADP</h3>
-        <p className="ind-role">Senior Member Technical · Payroll and HCM</p>
-        <p>Developed enterprise payroll solutions and contributed to a next-generation human capital management platform. Led technical initiatives for enterprise applications.</p>
+        <p className="ind-role">Senior Member Technical · Lyric</p>
+        <p className="ind-role-dates">Oct 2023–Jan 2025 · Hyderabad, hybrid</p>
+        <p>Developed payroll solutions for large enterprise clients. Helped build Lyric, a human capital management platform designed to serve businesses of different sizes.</p>
+        <p>Led technical initiatives for enterprise-scale applications.</p>
       </div>
       <div hidden id="ind-role-highradius">
         <h3>HighRadius</h3>
-        <p className="ind-role">Associate Software Engineer I · Previously Software Engineer Intern</p>
-        <p>Built an API framework that cut web posting time by about 40% and deployed backend automation for more than 20 customers. As an intern, improved internal frameworks and testing practices.</p>
+        <p className="ind-role">Associate Software Engineer I · Deduction Management System</p>
+        <p className="ind-role-dates">Jun 2021–Sep 2023 · Hyderabad, on-site</p>
+        <p>Designed a Node.js REST API framework that cut web posting time by about 40%. Built and deployed backend automation for more than 20 customers.</p>
+        <p className="ind-earlier-role">Earlier internships · Apr 2020–Jun 2021</p>
+        <p>Built a full-stack accounts receivable tool with payment predictions and interactive analytics. On the CPA product, developed Java and Spring applications backed by SQL, fixed framework bugs, and wrote tests.</p>
       </div>
     </section>
   );
@@ -132,74 +141,96 @@ function Introduction() {
   );
 }
 
+const workflow = [
+  {
+    name: "Scope the change",
+    icon: "architecture",
+    summary: "Give Claude Code the relevant files, constraints, and acceptance criteria.",
+    detail: "Ask Claude Code to trace the existing behavior and propose a plan. Review the assumptions, pick the smallest useful change, and decide what evidence will show it works.",
+  },
+  {
+    name: "Prototype a real workflow",
+    icon: "work",
+    summary: "Build one end-to-end path with representative data and get feedback early.",
+    detail: "Try the flow in a browser before investing in the full build. Include empty, loading, and failure states. Give coding agents separate, bounded tasks for implementation and tests.",
+  },
+  {
+    name: "Verify the result",
+    icon: "review",
+    summary: "Run tests in CI and have a person review the diff before merge.",
+    detail: "For agent features, add evals that check the final outcome and tool calls. Cover wrong answers, tool failures, and actions that require approval. Keep those cases in the regression suite.",
+  },
+  {
+    name: "Ship and monitor",
+    icon: "sensor",
+    summary: "Roll out gradually and watch traces, error rate, latency, and model cost.",
+    detail: "Set alerts for failed runs and service regressions. Use traces to see which tool call failed, pause or roll back when needed, and turn recurring production issues into tests or evals.",
+  },
+];
+
 function Capabilities() {
   return (
     <section className="ind-shell ind-capabilities" id="skills" aria-labelledby="ind-capabilities">
-      <h2 id="ind-capabilities">{"How I "}
-        <em>build.</em>
-      </h2>
-      <p className="ind-cap-sub">Three ways I turn an engineering problem into something people can use.</p>
-      <div className="ind-cap-grid">
-        <details className="ind-visual-cap" style={{"--cap-bg": "#5454df"}}>
-          <summary>
-            <div className="ind-cap-art" aria-hidden="true">
-              <img src="/portfolio/project-thumbnail-ab8bccb.jpg" alt="" loading="lazy" />
-              <div className="ind-cap-tags">
-                <span style={{"--tag-n": "0"}}>Prompt-driven QA</span>
-                <span style={{"--tag-n": "1"}}>Web and mobile</span>
-                <span style={{"--tag-n": "2"}}>Reviewable findings</span>
-              </div>
-            </div>
-            <span className="ind-cap-card-title">Agentic QA</span>
-          </summary>
-          <div className="ind-cap-detail">
-            <p>Turn a release-check prompt into a run that explores the flow and surfaces findings for the team to review.</p>
-            <a href="#ind-tcrawl-notes" data-open="">{"See the T-Crawl project "}<span aria-hidden="true">↗</span></a>
-          </div>
-        </details>
-        <details className="ind-visual-cap" style={{"--cap-bg": "#c5e4d8"}}>
-          <summary>
-            <div className="ind-cap-art" aria-hidden="true">
-              <img src="/portfolio/project-thumbnail-91a305b.jpg" alt="" loading="lazy" />
-              <div className="ind-cap-tags">
-                <span style={{"--tag-n": "0"}}>Dashboards</span>
-                <span style={{"--tag-n": "1"}}>Trend charts</span>
-                <span style={{"--tag-n": "2"}}>Threshold alerts</span>
-              </div>
-            </div>
-            <span className="ind-cap-card-title">Product engineering</span>
-          </summary>
-          <div className="ind-cap-detail">
-            <p>Bring field readings into one dashboard so someone can spot a trend or act on an alert.</p>
-            <a href="https://github.com/Angry-BOT/nordetect-app">{"Open Nordetect on GitHub "}<span aria-hidden="true">↗</span></a>
-          </div>
-        </details>
-        <details className="ind-visual-cap" style={{"--cap-bg": "#ded8f6"}}>
-          <summary>
-            <div className="ind-cap-art" aria-hidden="true">
-              <img src="/portfolio/project-thumbnail-d63aa9c.jpg" alt="" loading="lazy" />
-              <div className="ind-cap-tags">
-                <span style={{"--tag-n": "0"}}>Source citations</span>
-                <span style={{"--tag-n": "1"}}>Interaction demos</span>
-                <span style={{"--tag-n": "2"}}>Human review</span>
-              </div>
-            </div>
-            <span className="ind-cap-card-title">Prototyping</span>
-          </summary>
-          <div className="ind-cap-detail">
-            <p>Use a small working scene to test how a workflow reads before committing to a production implementation.</p>
-            <a href="#ind-ask">{"See the portfolio assistant concept "}<span aria-hidden="true">↗</span></a>
-          </div>
-        </details>
-      </div>
+      <h2 id="ind-capabilities">Engineering in the <em>AI era.</em></h2>
+      <p className="ind-cap-sub">From a scoped problem to a release I can verify and monitor.</p>
+      <ol className="ind-workflow">
+        {workflow.map(({ name, icon, summary, detail }, index) => (
+          <li key={name}>
+            <details className="ind-workflow-step">
+              <summary>
+                <span className="ind-workflow-meta">
+                  <span className="ind-workflow-icon"><PortfolioIcon name={icon} /></span>
+                  <span className="ind-workflow-number">Step {index + 1}</span>
+                </span>
+                <span className="ind-workflow-title">{name}</span>
+                <span className="ind-workflow-summary">{summary}</span>
+                <span className="ind-workflow-indicator" aria-hidden="true" />
+              </summary>
+              <p className="ind-workflow-detail">{detail}</p>
+            </details>
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }
 
 const projects = [
-  { name: "T-Crawl", icon: "crawl", tone: "ind-indigo-icon", type: "Post-release QA", result: "42% faster bug finding", href: "#ind-tcrawl-notes", art: "#ind-art-tcrawl" },
-  { name: "Nordetect", icon: "sensor", tone: "ind-mint-icon", type: "Agricultural sensing", result: "Sensor trends and threshold alerts", href: "https://github.com/Angry-BOT/nordetect-app", art: "#ind-art-nordetect" },
-  { name: "Tractiv", icon: "location", tone: "ind-lilac-icon", type: "Personal safety prototype", result: "Emergency location sharing", href: "#ind-tractiv-notes", art: "#ind-art-tractiv" },
+  {
+    name: "Shaka Design Lab",
+    icon: "work",
+    tone: "ind-sand-icon",
+    type: "Freelance client project",
+    result: "Portfolio website for an interior design studio.",
+    href: "https://shakadesignlab.com/",
+    repo: { label: "Shaka Design Lab source", href: "https://github.com/Angry-BOT/shaka-design-lab-website" },
+  },
+  {
+    name: "Krackjack",
+    icon: "microphone",
+    tone: "ind-lilac-icon",
+    type: "Interview preparation prototype",
+    result: "Real-time speech transcription and AI-generated practice responses.",
+    href: "https://github.com/Angry-BOT/krackjack_ui",
+    repo: { label: "Krackjack backend", href: "https://github.com/Angry-BOT/krackjack_service" },
+  },
+  {
+    name: "Simple RAG App",
+    icon: "book",
+    tone: "ind-indigo-icon",
+    type: "Document Q&A",
+    result: "Upload PDF, text, or HTML and ask questions with source citations.",
+    href: "https://github.com/Angry-BOT/simple-rag-app",
+  },
+  {
+    name: "Nordetect",
+    icon: "sensor",
+    tone: "ind-mint-icon",
+    type: "Agricultural IoT",
+    result: "Monitor device readings, chart nitrogen trends, and flag threshold violations.",
+    href: "https://github.com/Angry-BOT/nordetect-app",
+    image: "/portfolio/project-thumbnail-91a305b.jpg",
+  },
 ];
 
 function Projects() {
@@ -207,57 +238,35 @@ function Projects() {
     <section className="ind-shell ind-project-index" aria-labelledby="ind-project-index">
       <header className="ind-project-heading">
         <h2 id="ind-project-index">Things I’ve <em>built.</em></h2>
-        <p>Software for release checks, field readings, and personal safety.</p>
+        <p>Freelance work and experiments in AI, data, and connected devices.</p>
       </header>
       <ul className="ind-project-rows">
-        {projects.map(({ name, icon, tone, type, result, href, art }) => (
+        {projects.map(({ name, icon, tone, type, result, href, repo }, index) => (
           <li key={name}>
-            <a className="ind-project-row" href={href} data-open={href.startsWith("#") ? "" : undefined} data-preview={art}>
+            <a className="ind-project-row" href={href} data-preview={`#ind-art-${index}`}>
               <span className={`ind-project-icon ${tone}`}><PortfolioIcon name={icon} /></span>
               <strong>{name}</strong>
               <span className="ind-project-result">{result}</span>
               <span className="ind-project-type">{type}</span>
               <span className="ind-project-arrow" aria-hidden="true">↗</span>
             </a>
+            {repo && (
+              <a className="ind-project-source" href={repo.href}>
+                {repo.label} <span aria-hidden="true">↗</span>
+              </a>
+            )}
           </li>
         ))}
       </ul>
-      <details className="ind-project-notes" id="ind-tcrawl-notes">
-        <summary>T-Crawl details</summary>
-        <p>I led development of T-Crawl, a prompt-driven QA agent that explores web, iOS, and Android apps and reports findings for review.</p>
-        <p>{tCrawlOutcome}</p>
-        <img src="/portfolio/project-thumbnail-ab8bccb.jpg" alt="Illustrative QA run showing a sample Android finding" className="ind-case-thumb" loading="lazy" width="640" height="420" />
-      </details>
-      <details className="ind-project-notes" id="ind-tractiv-notes">
-        <summary>Tractiv details</summary>
-        <p>A wearable and companion app prototype that shares an emergency location with trusted contacts.</p>
-      </details>
       <div className="ind-hover-preview" aria-hidden="true" inert></div>
-      <div hidden id="ind-art-tcrawl">
-        <div className="ind-cover ind-blue">
-          <span>T-Crawl</span>
-          <span className="ind-tile-arrow" aria-hidden="true">↗</span>
-          <img src="/portfolio/project-thumbnail-ab8bccb.jpg" alt="" width="640" height="420" draggable={false} />
-        </div>
-      </div>
-      <div hidden id="ind-art-nordetect">
-        <div className="ind-cover ind-mint">
-          <span>Nordetect</span>
-          <span className="ind-tile-arrow" aria-hidden="true">↗</span>
-          <img src="/portfolio/project-thumbnail-91a305b.jpg" alt="" draggable={false} />
-        </div>
-      </div>
-      <div hidden id="ind-art-tractiv">
-        <div className="ind-cover ind-lilac">
-          <span>Tractiv</span>
-          <span className="ind-tile-arrow" aria-hidden="true">↗</span>
-          <div className="ind-map" aria-hidden="true">
-            <i></i>
-            <i></i>
-            <i></i>
+      {projects.map(({ name, icon, tone, image }, index) => (
+        <div hidden id={`ind-art-${index}`} key={name}>
+          <div className={`ind-cover ind-project-cover ${tone}`}>
+            <span>{name}</span>
+            {image ? <img src={image} alt="" loading="lazy" draggable={false} /> : <PortfolioIcon name={icon} />}
           </div>
         </div>
-      </div>
+      ))}
     </section>
   );
 }
@@ -314,45 +323,6 @@ function CareerHighlights() {
   );
 }
 
-function DesignSystem() {
-  return (
-    <aside className="ind-system" aria-label="Design system for review">
-      <details className="ind-shell" id="ind-system">
-        <summary>{"Design system "}
-          <span>{"Type, color, components & motion"}</span>
-        </summary>
-        <button type="button" className="ind-replay" hidden>Replay the opening</button>
-        <div className="ind-system-grid">
-          <div>
-            <h3>Color</h3>
-            <div className="ind-swatches">
-              <span style={{"--swatch": "#eff2fb"}}>{"Mist "}<code>#EFF2FB</code></span>
-              <span style={{"--swatch": "#101219"}}>{"Ink "}<code>#101219</code></span>
-              <span style={{"--swatch": "#3835d4"}}>{"Indigo "}<code>#3835D4</code></span>
-              <span style={{"--swatch": "#101219"}}>{"Night "}<code>#101219</code></span>
-              <span style={{"--swatch": "#d7ecdf"}}>{"Mint "}<code>#D7ECDF</code></span>
-              <span style={{"--swatch": "#e2dbf8"}}>{"Lilac "}<code>#E2DBF8</code></span>
-            </div>
-          </div>
-          <div>
-            <h3>Type and layout</h3>
-            <p>Instrument Sans 400–600 for UI and display, Instrument Serif italic for expressive lines, DM Mono 400 for short labels. Hero 47–140 px, sections 43–91 px, body 16–19 px. Use 20–76 px gutters and a 1120 px content cap. Project covers use 18 px corners. Actions use pills or 44 px circles.</p>
-          </div>
-          <div>
-            <h3>Components and states</h3>
-            <p>Center the navigation pill with the theme button beside Contact. Right-align the location, local time, and résumé. The theme starts with the device preference and remembers a manual choice. Employer tiles open descriptions on click, tap, or Enter. Four expandable career cards cover total experience, AI skills, favorite tools, and hobbies.</p>
-          </div>
-          <div>
-            <h3>Motion</h3>
-            <p>On hover, individual letters in the hero and footer travel up to 13 px and settle in 630 ms. The portrait contracts to 74% as shortcuts fan out from the nearest pair with a 45 ms stagger. Tap or Enter opens the same links. Capability tags reveal with 43 ms stagger. The name swaps to SD in compact navigation.</p>
-            <p>GSAP animates the opposing headline entrance, glyph response, portrait links, capability tags, pointer previews, and navigation swap. Employer previews fade and scale in over 280 ms. Reduced motion keeps all controls usable with instant transitions.</p>
-          </div>
-        </div>
-      </details>
-    </aside>
-  );
-}
-
 export default function PortfolioPage() {
   return (
     <div id="sd-indigo">
@@ -366,7 +336,6 @@ export default function PortfolioPage() {
         <Assistant />
         <Contact />
       </main>
-      <DesignSystem />
       <PortfolioInteractions />
     </div>
   );

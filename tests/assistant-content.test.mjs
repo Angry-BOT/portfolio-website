@@ -20,11 +20,11 @@ test("incidental words cannot select an unrelated answer", () => {
   }
 });
 
-test("the T-Crawl outcome cites a disclosure containing the result", () => {
+test("the T-Crawl outcome cites the TMUS experience disclosure", () => {
   const { answer, sources } = findPortfolioAnswer("What was the impact of T-Crawl?");
   assert.ok(answer.includes(tCrawlOutcome));
   assert.deepEqual(sources, [
-    { label: "T-Crawl project and outcome", href: "#ind-tcrawl-notes", openDetails: true },
+    { label: "TMUS experience and T-Crawl outcome", href: "#ind-company-tmus", openDetails: true },
   ]);
 });
 

@@ -9,7 +9,7 @@ const topics = [
   {
     questions: /^(?:t ?crawl(?: s)?(?: (?:impact|outcome|results|platforms))?|(?:the )?(?:impact|outcome|results) of t ?crawl|how does t ?crawl work|what (?:does t ?crawl do|platforms does t ?crawl (?:cover|support|test)|impact did t ?crawl have))$/,
     answer: `At TMUS Global Solutions, Shailesh led development of T-Crawl, a prompt-driven QA agent for web, iOS, and Android. It reports findings for review. ${tCrawlOutcome}`,
-    sources: [{ label: "T-Crawl project and outcome", href: "#ind-tcrawl-notes", openDetails: true }],
+    sources: [{ label: "TMUS experience and T-Crawl outcome", href: "#ind-company-tmus", openDetails: true }],
   },
   {
     questions: /^(?:nordetect(?: dashboard)?|how does nordetect work|what does nordetect do)$/,
@@ -19,7 +19,7 @@ const topics = [
   {
     questions: /^(?:tractiv(?: prototype)?|how does tractiv work|what does tractiv do)$/,
     answer: "Tractiv is a personal safety prototype that pairs a wearable and mobile app to share an emergency location with trusted contacts.",
-    sources: [{ label: "Tractiv project", href: "#ind-tractiv-notes", openDetails: true }],
+    sources: [{ label: "Tractiv GitHub repository", href: `${github}/Tractiv-Track-your-Peers` }],
   },
   {
     questions: /^(?:(?:(?:shailesh(?: das)? s|his|your) )?(?:experience|career|work history|current employer|previous roles)|where (?:(?:has|does|did) (?:shailesh(?: das)?|he|you)|have you) work(?:ed)?(?: (?:before|now))?|what companies has (?:shailesh(?: das)?|he) worked (?:at|for))$/,

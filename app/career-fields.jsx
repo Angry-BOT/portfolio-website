@@ -3,13 +3,14 @@ import PortfolioIcon from "./portfolio-icon";
 const fields = [
   {
     title: "Total experience",
-    metric: "5+ years",
-    summary: "Professional software engineering",
-    items: [{ name: "Full-time since June 2021", icon: "briefcase" }],
-    note: "My full-time career started at HighRadius after a software engineering internship.",
+    metric: "6+ years",
+    summary: "Software engineering, including internship",
+    items: [{ name: "Engineering since April 2020", icon: "briefcase" }],
+    note: "I started as a software engineering intern at HighRadius and moved into a full-time role in June 2021.",
   },
   {
     title: "AI Experience",
+    metric: "1+ years",
     items: [
       { name: "Claude Agent SDK", logo: "claude" },
       { name: "LangChain", logo: "langchain" },

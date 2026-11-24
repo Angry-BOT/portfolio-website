@@ -18,10 +18,17 @@ function mountPortfolio(root) {
   const motion = gsap;
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   const fine = matchMedia("(hover: hover) and (pointer: fine)");
+  const mobileHeader = matchMedia("(max-width: 680px)");
   const canAnimate = () => Boolean(motion && !reduced.matches);
   const head = find(".ind-head");
   const hero = find(".ind-hero");
   const nav = head.querySelector(".ind-nav-links");
+  const navLinks = Array.from(nav.querySelectorAll("a"));
+  const navTargets = [
+    { hash: "#ind-about", section: find("#about") },
+    { hash: "#ind-project-index", section: find(".ind-project-index") },
+    { hash: "#ind-contact", section: find("#contact") },
+  ];
   const contact = find(".ind-quick-contact");
   const logo = find(".ind-logo");
   const name = find(".ind-wordmark-text");
@@ -37,6 +44,7 @@ function mountPortfolio(root) {
   }
 
   let scrollFrame = 0;
+  let activeHash;
   function updateHeader() {
     scrollFrame = 0;
     const bounds = dark.getBoundingClientRect();
@@ -44,11 +52,28 @@ function mountPortfolio(root) {
     const darkBehindHeader = bounds.top < probe && bounds.bottom > probe;
     const footerDominates = bounds.top < innerHeight * .42 && bounds.bottom > innerHeight * .74;
     head.classList.toggle("on-dark", darkBehindHeader || footerDominates);
-    const compact = hero.getBoundingClientRect().bottom < Math.min(innerHeight * .48, 360);
-    if (compact === head.classList.contains("is-compact") || head.querySelector(":focus-visible")) return;
+    const atEnd = document.documentElement.scrollHeight - innerHeight - scrollY <= 32;
+    const activeTarget = atEnd ? navTargets.at(-1) : navTargets.findLast(({ section }) =>
+      section.getBoundingClientRect().top <= head.offsetHeight + 22
+    );
+    if (activeTarget?.hash !== activeHash) {
+      activeHash = activeTarget?.hash;
+      navLinks.forEach(link => {
+        if (link.hash === activeHash) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      });
+    }
+
+    const compact = !mobileHeader.matches && hero.getBoundingClientRect().bottom < Math.min(innerHeight * .48, 360);
+    if (compact === head.classList.contains("is-compact") || (!mobileHeader.matches && head.querySelector(":focus-visible"))) return;
     head.classList.toggle("is-compact", compact);
     nav.inert = compact;
     contact.inert = !compact;
+    if (mobileHeader.matches) {
+      motion.killTweensOf([nav, contact, logo, name]);
+      motion.set([nav, contact, logo, name], { clearProps: "transform,opacity,visibility" });
+      return;
+    }
     swap(compact ? contact : nav, compact ? nav : contact);
     swap(compact ? logo : name, compact ? name : logo);
   }
@@ -57,6 +82,8 @@ function mountPortfolio(root) {
   }
   listen(window,"scroll", scheduleHeader, {passive:true});
   listen(window,"resize", scheduleHeader, {passive:true});
+  listen(window,"hashchange", scheduleHeader);
+  listen(document,"scrollend", scheduleHeader);
   listen(head,"focusout", scheduleHeader);
   updateHeader();
   function showName(show) {
@@ -149,19 +176,37 @@ function mountPortfolio(root) {
       else motion.to(hoverEmployer,{x,y,duration:.26,ease:"power3.out",overwrite:"auto"});
     } else hoverEmployer.style.transform=`translate(${x}px,${y}px)`;
   }
+  const employerLogos = employerButtons.map(button => button.querySelector(".ind-employer-logo"));
+
+  function animateEmployerLogo(button, tapped = false) {
+    if (!canAnimate()) return;
+    const mark = button.querySelector(".ind-employer-logo");
+    motion.killTweensOf(mark);
+    motion.timeline()
+      .to(mark, { y: tapped ? -3 : -5, scale: 1.08, duration: .18, ease: "power2.out" })
+      .to(mark, { y: 0, scale: 1, duration: .34, ease: "back.out(1.6)", clearProps: "transform" });
+  }
+  listen(reduced, "change", () => {
+    motion.killTweensOf(employerLogos);
+    motion.set(employerLogos, { clearProps: "transform" });
+  });
+
   employerButtons.forEach(button => {
     listen(button,"pointerenter", event => {
-      if (event.pointerType!=="mouse" || !fine.matches || button.getAttribute("aria-expanded")==="true") return;
+      if (event.pointerType !== "mouse" || !fine.matches) return;
+      animateEmployerLogo(button);
+      if (mobileHeader.matches || button.getAttribute("aria-expanded") === "true") return;
       fillEmployer(hoverEmployer,button);
       placeEmployer(event,true);
       if (motion) motion.fromTo(hoverEmployer,{autoAlpha:0,scale:.96},{autoAlpha:1,scale:1,duration:canAnimate()?.28:0,ease:"power3.out",overwrite:"auto"});
       else { hoverEmployer.style.opacity=1; hoverEmployer.style.visibility="visible"; }
     });
     listen(button,"pointermove", event => {
-      if (event.pointerType==="mouse" && fine.matches) placeEmployer(event);
+      if (event.pointerType === "mouse" && fine.matches && !mobileHeader.matches) placeEmployer(event);
     });
     listen(button,"pointerleave",hideEmployer);
     listen(button,"click", () => {
+      animateEmployerLogo(button, true);
       const open=button.getAttribute("aria-expanded")!=="true";
       employerButtons.forEach(item=>item.setAttribute("aria-expanded",String(open&&item===button)));
       selectedEmployer.hidden=!open;
@@ -188,7 +233,7 @@ function mountPortfolio(root) {
     if (immediate) motion.set(preview, { x, y });
     else motion.to(preview, { x, y, duration: .27, ease: "power3.out", overwrite: "auto" });
   }
-  const canPreview = event => canAnimate() && fine.matches && event.pointerType === "mouse";
+  const canPreview = event => !mobileHeader.matches && canAnimate() && fine.matches && event.pointerType === "mouse";
 
   index.querySelectorAll("[data-preview]").forEach(row => {
     listen(row, "pointerenter", event => {
@@ -209,7 +254,6 @@ function mountPortfolio(root) {
 
   function openLinkedDetails(hash) {
     const target = document.getElementById(hash.slice(1));
-    if (target?.matches("details.ind-project-notes")) target.open = true;
     if (target?.matches(".ind-employer-button[aria-expanded=false]")) target.click();
   }
 
@@ -226,7 +270,6 @@ function mountPortfolio(root) {
   const seen=new WeakSet();
   let introduced=false;
   media.add("(prefers-reduced-motion: no-preference)", context => {
-    const replay=find(".ind-replay");
     let entry;
     context.add("opening",()=>{
       entry?.revert();
@@ -239,9 +282,6 @@ function mountPortfolio(root) {
         .from(".ind-summary",{opacity:0,y:12,duration:.62},.56);
     });
     if(!introduced){introduced=true;context.opening();}
-    const play=()=>{hero.scrollIntoView({block:"start",behavior:"instant"});context.opening();};
-    replay.hidden=false;
-    listen(replay,"click",play);
     motion.fromTo(".ind-ambient",{xPercent:-4,yPercent:-7,scale:.9},{xPercent:5,yPercent:5,scale:1.06,duration:22,repeat:-1,yoyo:true,ease:"sine.inOut"});
     const interact=new AbortController();
     const options={signal:interact.signal};
@@ -259,31 +299,14 @@ function mountPortfolio(root) {
     find(".ind-footer-title").addEventListener("focus",event=>{
       if(event.currentTarget.matches(":focus-visible")) Array.from(event.currentTarget.querySelectorAll(".ind-letter")).slice(0,5).forEach((slot,i)=>context.letter(slot,i%2===0?1:-1));
     },options);
-    context.add("capability",(card,show)=>{
-      const tags=card.querySelectorAll(".ind-cap-tags span");
-      motion.to(tags,{autoAlpha:show?1:0,y:show?0:10,scale:show?1:.94,duration:.29,stagger:show?.043:0,overwrite:"auto",ease:"power2.out"});
-      motion.to(card.querySelector(".ind-cap-art img"),{rotation:show?-4:-8,scale:show?1.075:1,duration:.42,overwrite:"auto"});
-      motion.to(card.querySelector(".ind-cap-shade"),{opacity:show?1:0,duration:.27,overwrite:"auto"});
-    });
-    root.querySelectorAll(".ind-visual-cap").forEach(card=>{
-      motion.set(card.querySelectorAll(".ind-cap-tags span"),{autoAlpha:0,y:10,scale:.94});
-      const refresh=()=>context.capability(card,card.open||card.matches(":focus-within")||(fine.matches&&card.matches(":hover")));
-      ["pointerenter","pointerleave","focusin","toggle"].forEach(event=>listen(card,event,refresh,options));
-      listen(card,"focusout",event=>{
-        if(!card.contains(event.relatedTarget))context.capability(card,card.open||(fine.matches&&card.matches(":hover")));
-      },options);
-      refresh();
-    });
-    context.add("revealCareerField", field => {
-      const detail = field.querySelector(".ind-field-detail");
-      motion.killTweensOf(detail);
+    context.add("revealDetail", detail => {
       motion.fromTo(detail, { opacity: .45, y: 6 }, {
-        opacity: 1, y: 0, duration: .29, ease: "power2.out", clearProps: "opacity,transform",
+        opacity: 1, y: 0, duration: .29, ease: "power2.out", clearProps: "opacity,transform", overwrite: true,
       });
     });
-    root.querySelectorAll(".ind-impact-field").forEach(field => {
+    root.querySelectorAll(".ind-impact-field, .ind-workflow-step").forEach(field => {
       listen(field, "toggle", () => {
-        if (field.open) context.revealCareerField(field);
+        if (field.open) context.revealDetail(field.lastElementChild);
       }, options);
     });
     context.add("rise",element=>{
@@ -299,8 +322,6 @@ function mountPortfolio(root) {
     return ()=>{
       observer.disconnect();
       interact.abort();
-      replay.hidden=true;
-      replay.removeEventListener("click",play);
       clearProfileAnimation();
       motion.killTweensOf([hoverEmployer,preview,nav,contact,logo,name,selectedEmployer]);
       motion.set([hoverEmployer,preview,nav,contact,logo,name,selectedEmployer],{clearProps:"transform,opacity,visibility"});
@@ -314,6 +335,7 @@ function mountPortfolio(root) {
     cancelAnimationFrame(scrollFrame);
     media.revert();
     clearProfileAnimation();
-    motion.killTweensOf([hoverEmployer, preview, nav, contact, logo, name, selectedEmployer]);
+    motion.killTweensOf([hoverEmployer, preview, nav, contact, logo, name, selectedEmployer, ...employerLogos]);
+    motion.set(employerLogos, { clearProps: "transform" });
   };
 }
