@@ -9,8 +9,7 @@ const fields = [
     note: "My full-time career started at HighRadius after a software engineering internship.",
   },
   {
-    title: "AI-era toolkit",
-    summary: "Agent development, infrastructure, and system design",
+    title: "AI Experience",
     items: [
       { name: "Claude Agent SDK", logo: "claude" },
       { name: "LangChain", logo: "langchain" },
@@ -60,7 +59,7 @@ export default function CareerFields() {
             <span className="ind-field-label">{title}</span>
             <span className="ind-field-indicator" aria-hidden="true" />
             {metric && <strong className="ind-field-metric">{metric}</strong>}
-            <span className="ind-field-summary">{summary}</span>
+            <span className="ind-field-summary">{summary ?? items.map(item => item.name).join(", ")}</span>
             <span className="ind-field-icon-row" aria-hidden="true">
               {items.slice(0, 4).map(item => <FieldIcon key={item.name} item={item} />)}
             </span>
