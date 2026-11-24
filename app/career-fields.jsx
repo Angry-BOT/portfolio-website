@@ -1,80 +1,74 @@
 import PortfolioIcon from "./portfolio-icon";
 
-const fields = [
-  {
-    title: "Total experience",
-    metric: "6+ years",
-    summary: "Software engineering, including internship",
-    items: [{ name: "Engineering since April 2020", icon: "briefcase" }],
-    note: "I started as a software engineering intern at HighRadius and moved into a full-time role in June 2021.",
-  },
-  {
-    title: "AI Experience",
-    metric: "1+ years",
-    items: [
-      { name: "Claude Agent SDK", logo: "claude" },
-      { name: "LangChain", logo: "langchain" },
-      { name: "LangGraph", logo: "langgraph" },
-      { name: "Harness engineering", icon: "harness" },
-      { name: "Kubernetes (K8s)", logo: "kubernetes" },
-      { name: "System design", icon: "architecture" },
-      { name: "Human-in-the-loop workflows", icon: "review" },
-    ],
-  },
-  {
-    title: "Agentic tools I love",
-    summary: "Claude Code, Codex, and Antigravity",
-    items: [
-      { name: "Claude Code", logo: "claude-code" },
-      { name: "Codex", logo: "codex" },
-      { name: "Google Antigravity", logo: "antigravity" },
-    ],
-  },
-  {
-    title: "Hobbies",
-    summary: "Taking things apart, building devices, and gaming",
-    items: [
-      { name: "Reverse engineering", icon: "puzzle" },
-      { name: "Gaming", icon: "gamepad" },
-      { name: "Building AI-enabled IoT devices", icon: "chip" },
-      { name: "Exploring new technology", icon: "spark" },
-      { name: "Reading technical articles", icon: "book" },
-    ],
-  },
+const engineering = [
+  { name: "Enterprise payroll", icon: "architecture" },
+  { name: "Influencer marketing", icon: "work" },
+  { name: "Agentic QA", icon: "review" },
 ];
 
-function FieldIcon({ item }) {
+const ai = [
+  { name: "Claude Agent SDK", logo: "claude" },
+  { name: "LangChain", logo: "langchain" },
+  { name: "LangGraph", logo: "langgraph" },
+  { name: "Harness engineering", icon: "harness" },
+  { name: "Kubernetes (K8s)", logo: "kubernetes" },
+  { name: "System design", icon: "architecture" },
+  { name: "Human-in-the-loop workflows", icon: "review" },
+];
+
+const tools = [
+  { name: "Claude Code", logo: "claude-code" },
+  { name: "Codex", logo: "codex" },
+  { name: "Google Antigravity", logo: "antigravity" },
+];
+
+const hobbies = [
+  { name: "Reverse engineering", icon: "puzzle" },
+  { name: "Gaming", icon: "gamepad" },
+  { name: "Building AI-enabled IoT devices", icon: "chip" },
+  { name: "Exploring new technology", icon: "spark" },
+  { name: "Reading technical articles", icon: "book" },
+];
+
+function CareerItems({ items }) {
   return (
-    <span className={item.logo ? "ind-field-icon ind-field-logo" : "ind-field-icon"}>
-      {item.logo ? <img src={`/portfolio/icons/${item.logo}.svg`} width="20" height="20" alt="" /> : <PortfolioIcon name={item.icon} />}
-    </span>
+    <ul className="ind-career-items">
+      {items.map(({ name, logo, icon }) => (
+        <li key={name}>
+          <span className={logo ? "ind-field-icon ind-field-logo" : "ind-field-icon"}>
+            {logo ? <img src={"/portfolio/icons/" + logo + ".svg"} width="18" height="18" alt="" /> : <PortfolioIcon name={icon} />}
+          </span>
+          {name}
+        </li>
+      ))}
+    </ul>
   );
 }
 
 export default function CareerFields() {
   return (
     <div className="ind-impact-fields">
-      {fields.map(({ title, metric, summary, items, note }) => (
-        <details key={title} className="ind-impact-field">
-          <summary>
-            <span className="ind-field-label">{title}</span>
-            <span className="ind-field-indicator" aria-hidden="true" />
-            {metric && <strong className="ind-field-metric">{metric}</strong>}
-            <span className="ind-field-summary">{summary ?? items.map(item => item.name).join(", ")}</span>
-            <span className="ind-field-icon-row" aria-hidden="true">
-              {items.slice(0, 4).map(item => <FieldIcon key={item.name} item={item} />)}
-            </span>
-          </summary>
-          <div className="ind-field-detail">
-            <ul>
-              {items.map(item => (
-                <li key={item.name}><FieldIcon item={item} />{item.name}</li>
-              ))}
-            </ul>
-            {note && <p>{note}</p>}
-          </div>
-        </details>
-      ))}
+      <div className="ind-impact-field">
+        <h3>Total experience</h3>
+        <p className="ind-field-metric"><strong>6+</strong> years</p>
+        <p className="ind-field-summary">Software engineering since April 2020, including internships.</p>
+        <CareerItems items={engineering} />
+        <a className="ind-career-link" href="#experience">View company experience <span aria-hidden="true">↗</span></a>
+      </div>
+      <div className="ind-impact-field">
+        <h3>AI Experience</h3>
+        <p className="ind-field-metric"><strong>1+</strong> years</p>
+        <p className="ind-field-summary">Building AI agents and the systems around them.</p>
+        <CareerItems items={ai} />
+      </div>
+      <div className="ind-impact-field ind-impact-compact">
+        <h3>Agentic tools I love</h3>
+        <CareerItems items={tools} />
+      </div>
+      <div className="ind-impact-field ind-impact-compact">
+        <h3>Hobbies</h3>
+        <CareerItems items={hobbies} />
+      </div>
     </div>
   );
 }

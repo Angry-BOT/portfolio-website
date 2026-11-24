@@ -4,13 +4,18 @@ import PortfolioInteractions from "./portfolio-interactions";
 import HyderabadTime from "./hyderabad-time";
 import PortfolioIcon from "./portfolio-icon";
 import ThemeToggle from "./theme-toggle";
+import Workflow from "./workflow";
 import { resumeUrl, tCrawlOutcome } from "./assistant-content";
+
+const contactLinks = [
+  { label: "Email", icon: "email", href: "mailto:shailo199925@gmail.com" },
+  { label: "GitHub", icon: "github", href: "https://github.com/Angry-BOT" },
+  { label: "LinkedIn", icon: "linkedin", href: "https://in.linkedin.com/in/shaileshdas12" },
+];
 
 const shortcuts = [
   { label: "Work", icon: "work", href: "#ind-project-index" },
-  { label: "GitHub", icon: "github", href: "https://github.com/Angry-BOT" },
-  { label: "Email", icon: "email", href: "mailto:shailo199925@gmail.com" },
-  { label: "LinkedIn", icon: "linkedin", href: "https://in.linkedin.com/in/shaileshdas12" },
+  ...contactLinks,
 ];
 
 function Header() {
@@ -37,7 +42,6 @@ function Header() {
 function Hero() {
   return (
     <section className="ind-hero ind-shell" aria-labelledby="ind-title">
-      <div className="ind-ambient" aria-hidden="true"></div>
       <div className="ind-profile">
         <button type="button" className="ind-profile-trigger" aria-label="Shailesh Das, profile links" aria-expanded="false" aria-controls="ind-profile-links">
           <img className="ind-portrait" src="/portfolio/shailesh-das-185966a.jpg" width="152" height="176" alt="" />
@@ -55,6 +59,7 @@ function Hero() {
       <p className="ind-label ind-intro">SOFTWARE ENGINEER · HYDERABAD</p>
       <h1 id="ind-title" aria-label="Software for real workflows."><span className="ind-line" aria-hidden="true"><b><span className="ind-word"><span className="ind-letter"><span className="ind-glyph">S</span></span><span className="ind-letter"><span className="ind-glyph">o</span></span><span className="ind-letter"><span className="ind-glyph">f</span></span><span className="ind-letter"><span className="ind-glyph">t</span></span><span className="ind-letter"><span className="ind-glyph">w</span></span><span className="ind-letter"><span className="ind-glyph">a</span></span><span className="ind-letter"><span className="ind-glyph">r</span></span><span className="ind-letter"><span className="ind-glyph">e</span></span></span>{" "}<span className="ind-word"><span className="ind-letter"><span className="ind-glyph">f</span></span><span className="ind-letter"><span className="ind-glyph">o</span></span><span className="ind-letter"><span className="ind-glyph">r</span></span></span></b></span><span className="ind-line" aria-hidden="true"><em><span className="ind-word"><span className="ind-letter"><span className="ind-glyph">r</span></span><span className="ind-letter"><span className="ind-glyph">e</span></span><span className="ind-letter"><span className="ind-glyph">a</span></span><span className="ind-letter"><span className="ind-glyph">l</span></span></span>{" "}<span className="ind-word"><span className="ind-letter"><span className="ind-glyph">w</span></span><span className="ind-letter"><span className="ind-glyph">o</span></span><span className="ind-letter"><span className="ind-glyph">r</span></span><span className="ind-letter"><span className="ind-glyph">k</span></span><span className="ind-letter"><span className="ind-glyph">f</span></span><span className="ind-letter"><span className="ind-glyph">l</span></span><span className="ind-letter"><span className="ind-glyph">o</span></span><span className="ind-letter"><span className="ind-glyph">w</span></span><span className="ind-letter"><span className="ind-glyph">s</span></span><span className="ind-letter"><span className="ind-glyph">.</span></span></span></em></span></h1>
       <p className="ind-summary">I build products and AI agents. At TMUS Global Solutions, I led development of an agent that helps teams find bugs after a release.</p>
+      <a className="ind-hero-action" href="#ind-project-index">Explore my work <span aria-hidden="true">↗</span></a>
     </section>
   );
 }
@@ -130,7 +135,7 @@ function Introduction() {
       <div className="ind-shell ind-split" id="ind-about">
         <div className="ind-introduction-lead">
           <p className="ind-label">Introduction</p>
-          <h2 id="ind-about-title">I build tools that make complex work <em>easier to verify.</em></h2>
+          <h2 id="ind-about-title" data-text-reveal><span>I build tools that make complex work</span>{" "}<em>easier to verify.</em></h2>
         </div>
         <div className="ind-introduction-copy">
           <p>I’m Shailesh Das, a software engineer based in Hyderabad. My work spans enterprise payroll, influencer marketing, and post-release QA for web and mobile apps.</p>
@@ -141,56 +146,12 @@ function Introduction() {
   );
 }
 
-const workflow = [
-  {
-    name: "Scope the change",
-    icon: "architecture",
-    summary: "Give Claude Code the relevant files, constraints, and acceptance criteria.",
-    detail: "Ask Claude Code to trace the existing behavior and propose a plan. Review the assumptions, pick the smallest useful change, and decide what evidence will show it works.",
-  },
-  {
-    name: "Prototype a real workflow",
-    icon: "work",
-    summary: "Build one end-to-end path with representative data and get feedback early.",
-    detail: "Try the flow in a browser before investing in the full build. Include empty, loading, and failure states. Give coding agents separate, bounded tasks for implementation and tests.",
-  },
-  {
-    name: "Verify the result",
-    icon: "review",
-    summary: "Run tests in CI and have a person review the diff before merge.",
-    detail: "For agent features, add evals that check the final outcome and tool calls. Cover wrong answers, tool failures, and actions that require approval. Keep those cases in the regression suite.",
-  },
-  {
-    name: "Ship and monitor",
-    icon: "sensor",
-    summary: "Roll out gradually and watch traces, error rate, latency, and model cost.",
-    detail: "Set alerts for failed runs and service regressions. Use traces to see which tool call failed, pause or roll back when needed, and turn recurring production issues into tests or evals.",
-  },
-];
-
 function Capabilities() {
   return (
     <section className="ind-shell ind-capabilities" id="skills" aria-labelledby="ind-capabilities">
-      <h2 id="ind-capabilities">Engineering in the <em>AI era.</em></h2>
-      <p className="ind-cap-sub">From a scoped problem to a release I can verify and monitor.</p>
-      <ol className="ind-workflow">
-        {workflow.map(({ name, icon, summary, detail }, index) => (
-          <li key={name}>
-            <details className="ind-workflow-step">
-              <summary>
-                <span className="ind-workflow-meta">
-                  <span className="ind-workflow-icon"><PortfolioIcon name={icon} /></span>
-                  <span className="ind-workflow-number">Step {index + 1}</span>
-                </span>
-                <span className="ind-workflow-title">{name}</span>
-                <span className="ind-workflow-summary">{summary}</span>
-                <span className="ind-workflow-indicator" aria-hidden="true" />
-              </summary>
-              <p className="ind-workflow-detail">{detail}</p>
-            </details>
-          </li>
-        ))}
-      </ol>
+      <h2 id="ind-capabilities" data-text-reveal><span>Engineering in the</span>{" "}<em>AI era.</em></h2>
+      <p className="ind-cap-sub">Explore the four stages from a scoped problem to a monitored release.</p>
+      <Workflow />
     </section>
   );
 }
@@ -237,22 +198,22 @@ function Projects() {
   return (
     <section className="ind-shell ind-project-index" aria-labelledby="ind-project-index">
       <header className="ind-project-heading">
-        <h2 id="ind-project-index">Things I’ve <em>built.</em></h2>
+        <h2 id="ind-project-index" data-text-reveal><span>Things I’ve</span>{" "}<em>built.</em></h2>
         <p>Freelance work and experiments in AI, data, and connected devices.</p>
       </header>
       <ul className="ind-project-rows">
         {projects.map(({ name, icon, tone, type, result, href, repo }, index) => (
-          <li key={name}>
-            <a className="ind-project-row" href={href} data-preview={`#ind-art-${index}`}>
+          <li key={name} className="ind-project-row" data-preview={`#ind-art-${index}`}>
+            <a className="ind-project-main" href={href}>
               <span className={`ind-project-icon ${tone}`}><PortfolioIcon name={icon} /></span>
               <strong>{name}</strong>
               <span className="ind-project-result">{result}</span>
               <span className="ind-project-type">{type}</span>
-              <span className="ind-project-arrow" aria-hidden="true">↗</span>
+              {!repo && <span className="ind-project-arrow" aria-hidden="true"><span>↗</span></span>}
             </a>
             {repo && (
-              <a className="ind-project-source" href={repo.href}>
-                {repo.label} <span aria-hidden="true">↗</span>
+              <a className="ind-project-arrow ind-project-arrow-link" href={repo.href} aria-label={repo.label} title={repo.label}>
+                <span aria-hidden="true">↗</span>
               </a>
             )}
           </li>
@@ -276,10 +237,7 @@ function Assistant() {
     <section className="ind-shell ind-assistant ind-split" aria-labelledby="ind-ask">
       <div>
         <p className="ind-label">PORTFOLIO ASSISTANT</p>
-        <h2 id="ind-ask">Ask about
-          <br />
-          <em>my work.</em>
-        </h2>
+        <h2 id="ind-ask" data-text-reveal><span>Ask about</span><br /><em>my work.</em></h2>
         <p className="ind-copy">Ask a question and explore the public sources behind the answer.</p>
       </div>
       <PortfolioAssistant />
@@ -289,25 +247,26 @@ function Assistant() {
 
 function Contact() {
   return (
-    <div className="ind-dark">
+    <>
       <CareerHighlights />
       <div id="contact">
         <footer id="ind-contact" className="ind-shell ind-footer ind-rule">
-          <div className="ind-footer-art" aria-hidden="true">S
-            <i></i>D
-          </div>
-          <h2>
+          <h2 data-text-reveal>
             <a className="ind-footer-title" href="mailto:shailo199925@gmail.com" aria-label="Let’s build something. Email Shailesh Das."><span aria-hidden="true"><span className="ind-word"><span className="ind-letter"><span className="ind-glyph">L</span></span><span className="ind-letter"><span className="ind-glyph">e</span></span><span className="ind-letter"><span className="ind-glyph">t</span></span><span className="ind-letter"><span className="ind-glyph">’</span></span><span className="ind-letter"><span className="ind-glyph">s</span></span></span>{" "}<span className="ind-word"><span className="ind-letter"><span className="ind-glyph">b</span></span><span className="ind-letter"><span className="ind-glyph">u</span></span><span className="ind-letter"><span className="ind-glyph">i</span></span><span className="ind-letter"><span className="ind-glyph">l</span></span><span className="ind-letter"><span className="ind-glyph">d</span></span></span></span><em aria-hidden="true"><span className="ind-word"><span className="ind-letter"><span className="ind-glyph">s</span></span><span className="ind-letter"><span className="ind-glyph">o</span></span><span className="ind-letter"><span className="ind-glyph">m</span></span><span className="ind-letter"><span className="ind-glyph">e</span></span><span className="ind-letter"><span className="ind-glyph">t</span></span><span className="ind-letter"><span className="ind-glyph">h</span></span><span className="ind-letter"><span className="ind-glyph">i</span></span><span className="ind-letter"><span className="ind-glyph">n</span></span><span className="ind-letter"><span className="ind-glyph">g</span></span></span></em></a>
           </h2>
           <div className="ind-contact">
-            <a href="mailto:shailo199925@gmail.com">Email ↗</a>
-            <a href="https://github.com/Angry-BOT">GitHub ↗</a>
-            <a href="https://in.linkedin.com/in/shaileshdas12">LinkedIn ↗</a>
+            {contactLinks.map(({ href, label, icon }) => (
+              <a href={href} key={label}>
+                <PortfolioIcon name={icon} />
+                {label}
+                <span className="ind-contact-arrow" aria-hidden="true">↗</span>
+              </a>
+            ))}
           </div>
           <p className="ind-footer-credit">© 2026 SHAILESH DAS</p>
         </footer>
       </div>
-    </div>
+    </>
   );
 }
 
@@ -316,7 +275,7 @@ function CareerHighlights() {
     <section className="ind-shell ind-highlights" aria-labelledby="ind-highlights-title">
       <div className="ind-highlights-intro">
         <p className="ind-label">Career highlights</p>
-        <h2 id="ind-highlights-title">Work with <em>measurable impact.</em></h2>
+        <h2 id="ind-highlights-title" data-text-reveal><span>Work with</span>{" "}<em>measurable impact.</em></h2>
       </div>
       <CareerFields />
     </section>
@@ -326,6 +285,9 @@ function CareerHighlights() {
 export default function PortfolioPage() {
   return (
     <div id="sd-indigo">
+      <div className="ind-page-gradient" aria-hidden="true">
+        <div className="ind-page-wash" />
+      </div>
       <Header />
       <main id="ind-home">
         <Hero />

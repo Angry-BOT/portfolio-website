@@ -32,7 +32,6 @@ function mountPortfolio(root) {
   const contact = find(".ind-quick-contact");
   const logo = find(".ind-logo");
   const name = find(".ind-wordmark-text");
-  const dark = find(".ind-dark");
 
   function swap(incoming, outgoing) {
     if (!canAnimate()) return;
@@ -47,11 +46,6 @@ function mountPortfolio(root) {
   let activeHash;
   function updateHeader() {
     scrollFrame = 0;
-    const bounds = dark.getBoundingClientRect();
-    const probe = head.getBoundingClientRect().top + head.offsetHeight / 2;
-    const darkBehindHeader = bounds.top < probe && bounds.bottom > probe;
-    const footerDominates = bounds.top < innerHeight * .42 && bounds.bottom > innerHeight * .74;
-    head.classList.toggle("on-dark", darkBehindHeader || footerDominates);
     const atEnd = document.documentElement.scrollHeight - innerHeight - scrollY <= 32;
     const activeTarget = atEnd ? navTargets.at(-1) : navTargets.findLast(({ section }) =>
       section.getBoundingClientRect().top <= head.offsetHeight + 22
@@ -271,20 +265,41 @@ function mountPortfolio(root) {
   let introduced=false;
   media.add("(prefers-reduced-motion: no-preference)", context => {
     let entry;
-    context.add("opening",()=>{
-      entry?.revert();
-      entry=motion.timeline({defaults:{ease:"power3.out",clearProps:"transform,opacity"}});
-      const travel=innerWidth<681?30:76;
-      entry.from(".ind-profile",{opacity:0,y:-10,duration:.66},0)
-        .from(".ind-intro",{opacity:0,y:10,duration:.58},.12)
-        .from("#ind-title b",{opacity:0,x:-travel,duration:.96},.15)
-        .from("#ind-title em",{opacity:0,x:travel,duration:.96},.30)
-        .from(".ind-summary",{opacity:0,y:12,duration:.62},.56);
+    context.add("opening", () => {
+      hero.classList.add("is-entering");
+      entry = motion.timeline({
+        defaults: { ease: "power3.out", clearProps: "transform,opacity" },
+        onComplete: () => hero.classList.remove("is-entering"),
+      });
+      entry.from(".ind-profile", { opacity: .22, y: 10, duration: .56 }, 0)
+        .from(".ind-intro", { opacity: .22, y: 10, duration: .56 }, .08)
+        .from("#ind-title b", { opacity: .2, yPercent: 78, duration: .82 }, .18)
+        .from("#ind-title em", { opacity: .2, yPercent: 78, duration: .82 }, .29)
+        .from(".ind-summary,.ind-hero-action", { opacity: .32, y: 10, duration: .55, stagger: .07 }, .53);
     });
-    if(!introduced){introduced=true;context.opening();}
-    motion.fromTo(".ind-ambient",{xPercent:-4,yPercent:-7,scale:.9},{xPercent:5,yPercent:5,scale:1.06,duration:22,repeat:-1,yoyo:true,ease:"sine.inOut"});
+    if (!introduced) {
+      introduced = true;
+      context.opening();
+    }
+
+    const wash = find(".ind-page-wash");
+    const position = () => {
+      const distance = document.documentElement.scrollHeight - innerHeight;
+      const progress = distance > 0 ? motion.utils.clamp(0, 1, scrollY / distance) : 0;
+      return { xPercent: -6 * progress, yPercent: 4 * progress };
+    };
+    motion.set(wash, position());
+    const horizontal = motion.quickTo(wash, "xPercent", { duration: .85, ease: "power2.out" });
+    const vertical = motion.quickTo(wash, "yPercent", { duration: .85, ease: "power2.out" });
+    const driftGradient = () => {
+      const { xPercent, yPercent } = position();
+      horizontal(xPercent);
+      vertical(yPercent);
+    };
     const interact=new AbortController();
     const options={signal:interact.signal};
+    listen(window, "scroll", driftGradient, { ...options, passive: true });
+    listen(window, "resize", driftGradient, options);
     context.add("letter", (slot,direction) => {
       const glyph=slot.firstElementChild;
       if(motion.isTweening(glyph))return;
@@ -299,29 +314,27 @@ function mountPortfolio(root) {
     find(".ind-footer-title").addEventListener("focus",event=>{
       if(event.currentTarget.matches(":focus-visible")) Array.from(event.currentTarget.querySelectorAll(".ind-letter")).slice(0,5).forEach((slot,i)=>context.letter(slot,i%2===0?1:-1));
     },options);
-    context.add("revealDetail", detail => {
-      motion.fromTo(detail, { opacity: .45, y: 6 }, {
-        opacity: 1, y: 0, duration: .29, ease: "power2.out", clearProps: "opacity,transform", overwrite: true,
+    context.add("rise", heading => {
+      const lines = heading.querySelector(".ind-footer-title")?.children ?? heading.children;
+      motion.from(lines, {
+        opacity: .32, y: 15, stagger: .085, duration: .61,
+        ease: "power3.out", clearProps: "transform,opacity",
       });
-    });
-    root.querySelectorAll(".ind-impact-field, .ind-workflow-step").forEach(field => {
-      listen(field, "toggle", () => {
-        if (field.open) context.revealDetail(field.lastElementChild);
-      }, options);
-    });
-    context.add("rise",element=>{
-      const words=element.querySelectorAll("[data-word]");
-      if(words.length)motion.from(words,{opacity:.27,y:16,duration:.55,stagger:.065,ease:"power3.out",clearProps:"transform,opacity"});
-      else motion.from(element,{opacity:.55,y:20,duration:.62,ease:"power3.out",clearProps:"transform,opacity"});
     });
     const observer=new IntersectionObserver(entries=>entries.forEach(({target,isIntersecting})=>{
       if(!isIntersecting)return;
       seen.add(target);observer.unobserve(target);context.rise(target);
     }),{threshold:.20});
-    root.querySelectorAll(".ind-companies,.ind-note .ind-split,.ind-capabilities,.ind-project-heading,.ind-assistant,.ind-highlights,.ind-footer").forEach(el=>{if(!seen.has(el))observer.observe(el);});
+    root.querySelectorAll("[data-text-reveal]").forEach(heading => {
+      if (!seen.has(heading)) observer.observe(heading);
+    });
     return ()=>{
       observer.disconnect();
       interact.abort();
+      horizontal.tween.kill();
+      vertical.tween.kill();
+      entry?.revert();
+      hero.classList.remove("is-entering");
       clearProfileAnimation();
       motion.killTweensOf([hoverEmployer,preview,nav,contact,logo,name,selectedEmployer]);
       motion.set([hoverEmployer,preview,nav,contact,logo,name,selectedEmployer],{clearProps:"transform,opacity,visibility"});
