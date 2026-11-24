@@ -416,19 +416,36 @@
 #sd-indigo .ind-highlights .ind-label{text-transform:uppercase;margin:0 0 17px;color:#b8c0d7}
 #sd-indigo .ind-highlights h2{font-size:clamp(46px,6.9vw,94px);line-height:.95;font-weight:500;letter-spacing:-.06em}
 #sd-indigo .ind-highlights h2 em{display:block;color:#cccef8}
-#sd-indigo .ind-career-profile{display:inline-flex;align-items:center;gap:7px;min-height:44px;margin-top:20px;color:#cccef8}
-#sd-indigo .ind-career-roles,#sd-indigo .ind-career-skills,#sd-indigo .ind-career-credentials{list-style:none;padding:0}
-#sd-indigo .ind-career-roles li{display:grid;gap:4px;border-top:1px solid var(--line);padding:12px 0}
-#sd-indigo .ind-career-roles h4{margin:0;font-size:clamp(18px,2vw,25px);font-weight:600;letter-spacing:-.025em;line-height:1.2}
-#sd-indigo .ind-career-roles p,#sd-indigo .ind-career-credentials{color:var(--muted);font-size:14px;line-height:1.5}
-#sd-indigo .ind-career-roles .ind-career-role{color:#cccef8;font-weight:500}
-#sd-indigo .ind-career-facts{
-  grid-column:1/-1;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.2fr) minmax(0,1fr);
-  gap:24px clamp(16px,4vw,48px);border-top:1px solid var(--line);padding-top:24px
+#sd-indigo .ind-impact-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:12px}
+#sd-indigo .ind-impact-field{
+  min-width:0;border:1px solid #424b62;border-radius:17px;background:#181c2a
 }
-#sd-indigo .ind-career-skills{display:flex;flex-wrap:wrap;gap:7px}
-#sd-indigo .ind-career-skills li{padding:4px 9px;border:1px solid var(--line);border-radius:100px;font-size:13px}
-#sd-indigo .ind-career-credentials{display:grid;gap:7px}
+#sd-indigo .ind-impact-field:is([open],:hover,:focus-within){border-color:#838bc8}
+#sd-indigo .ind-impact-field summary{
+  position:relative;display:grid;align-content:start;gap:10px;min-height:186px;
+  padding:17px 15px 15px;cursor:pointer;list-style:none;border-radius:16px
+}
+#sd-indigo .ind-impact-field summary::-webkit-details-marker{display:none}
+#sd-indigo .ind-field-label{display:block;padding-right:22px;font-size:18px;font-weight:600;line-height:1.15}
+#sd-indigo .ind-field-summary{color:var(--night-muted);font-size:13px;line-height:1.4}
+#sd-indigo .ind-field-metric{font-size:clamp(35px,3.8vw,53px);font-weight:500;line-height:.92;letter-spacing:-.07em;color:#d7d7ff}
+#sd-indigo .ind-field-indicator{position:absolute;right:13px;top:13px;width:23px;height:23px;border:1px solid #586183;border-radius:50%;color:#c7cfff}
+#sd-indigo .ind-field-indicator::before,#sd-indigo .ind-field-indicator::after{
+  content:"";position:absolute;left:50%;top:50%;width:9px;height:1px;background:currentColor;translate:-50% -50%
+}
+#sd-indigo .ind-field-indicator::after{rotate:90deg}
+#sd-indigo .ind-impact-field[open] .ind-field-indicator::after{display:none}
+#sd-indigo .ind-field-icon-row{display:flex;flex-wrap:wrap;gap:6px;padding-top:3px}
+#sd-indigo .ind-field-icon{
+  display:inline-grid;place-items:center;flex:none;width:32px;height:32px;border-radius:9px;
+  background:#2b3148;color:#e1e3ff
+}
+#sd-indigo .ind-field-logo{background:#f0effb;color:#20243b}
+#sd-indigo .ind-field-icon :is(svg,img){display:block;width:20px;height:20px;object-fit:contain}
+#sd-indigo .ind-field-detail{border-top:1px solid #424b62;padding:14px 15px;color:var(--night-text);font-size:14px}
+#sd-indigo .ind-field-detail ul{list-style:none;padding:0;display:grid;gap:8px}
+#sd-indigo .ind-field-detail li{display:flex;gap:9px;align-items:center;min-width:0}
+#sd-indigo .ind-field-detail p{margin-top:10px;color:var(--night-muted)}
 #sd-indigo .ind-hero::before{display:none}
 #sd-indigo .ind-ambient{position:absolute;z-index:-1;inset:0;pointer-events:none;background:radial-gradient(ellipse at 44% 60%,var(--ambient-glow),transparent 64%)}
 #sd-indigo :is(.ind-wordmark-text,.ind-logo,.ind-nav-links,.ind-quick-contact,.ind-quick-contact span,.ind-profile-links a,.ind-profile-trigger .ind-portrait,.ind-cap-art img,.ind-cap-art::after,.ind-cap-tags span,.ind-hover-preview){transition:none!important}
@@ -439,6 +456,7 @@
 #sd-indigo .ind-visual-cap[open] .ind-cap-shade{opacity:1}
 @media(max-width:680px){
   #sd-indigo .ind-highlights{grid-template-columns:1fr}
-  #sd-indigo .ind-career-facts{grid-template-columns:1fr}
   #sd-indigo .ind-footer h2{font-size:clamp(48px,11vw,72px)}
 }
+
+@media(max-width:430px){#sd-indigo .ind-impact-fields{grid-template-columns:1fr}}

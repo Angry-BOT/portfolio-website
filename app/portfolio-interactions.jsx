@@ -274,6 +274,18 @@ function mountPortfolio(root) {
       },options);
       refresh();
     });
+    context.add("revealCareerField", field => {
+      const detail = field.querySelector(".ind-field-detail");
+      motion.killTweensOf(detail);
+      motion.fromTo(detail, { opacity: .45, y: 6 }, {
+        opacity: 1, y: 0, duration: .29, ease: "power2.out", clearProps: "opacity,transform",
+      });
+    });
+    root.querySelectorAll(".ind-impact-field").forEach(field => {
+      listen(field, "toggle", () => {
+        if (field.open) context.revealCareerField(field);
+      }, options);
+    });
     context.add("rise",element=>{
       const words=element.querySelectorAll("[data-word]");
       if(words.length)motion.from(words,{opacity:.27,y:16,duration:.55,stagger:.065,ease:"power3.out",clearProps:"transform,opacity"});
