@@ -21,7 +21,7 @@ function mountPortfolio(root) {
   const canAnimate = () => Boolean(motion && !reduced.matches);
   const head = find(".ind-head");
   const hero = find(".ind-hero");
-  const nav = head.querySelector("nav");
+  const nav = head.querySelector(".ind-nav-links");
   const contact = find(".ind-quick-contact");
   const logo = find(".ind-logo");
   const name = find(".ind-wordmark-text");

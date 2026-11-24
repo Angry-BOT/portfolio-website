@@ -16,18 +16,18 @@ function Header() {
   return (
     <header className="ind-head ind-shell">
       <a className="ind-mark" href="#ind-home" aria-label="Shailesh Das, home"><span className="ind-wordmark-text" aria-hidden="true">SHAILESH DAS</span><span className="ind-logo" aria-hidden="true">S<i></i>D</span></a>
-      <nav aria-label="Portfolio">
-        <a href="#ind-project-index">Work</a>
-        <a href="#ind-about">About</a>
-        <a href="#ind-contact">Contact</a>
+      <nav className="ind-navigation" aria-label="Portfolio">
+        <div className="ind-nav-links">
+          <a href="#ind-project-index">Work</a>
+          <a href="#ind-about">About</a>
+          <a href="#ind-contact">Contact</a>
+        </div>
+        <a className="ind-quick-contact" href="#ind-contact" inert><img src="/portfolio/shailesh-das-185966a.jpg" alt="" />{"Let’s talk "}<span aria-hidden="true">↗</span></a>
+        <ThemeToggle />
       </nav>
-      <a className="ind-quick-contact" href="#ind-contact" inert><img src="/portfolio/shailesh-das-185966a.jpg" alt="" />{"Let’s talk "}<span aria-hidden="true">↗</span></a>
       <div className="ind-utility">
         <p><span>Hyderabad</span><HyderabadTime /></p>
-        <div className="ind-utility-actions">
-          <a className="ind-resume" href={resumeUrl}><PortfolioIcon name="document" />Résumé <span aria-hidden="true">↗</span></a>
-          <ThemeToggle />
-        </div>
+        <a className="ind-resume" href={resumeUrl}><PortfolioIcon name="document" />Résumé <span aria-hidden="true">↗</span></a>
       </div>
     </header>
   );
@@ -301,31 +301,59 @@ function Contact() {
   );
 }
 
+const careerRoles = [
+  { company: "TMUS Global Solutions", role: "Current · Telecom software engineering" },
+  { company: "Meltwater", role: "Software Engineer II", focus: "Improved an influencer marketing platform that supports search, campaign management, and payment tracking." },
+  { company: "ADP", role: "Senior Member Technical", focus: "Developed enterprise payroll software and contributed to a human capital management platform." },
+  { company: "HighRadius", role: "Associate Software Engineer I · Previously Software Engineer Intern", focus: "Built an API framework that cut web posting time by about 40% and deployed backend automation for more than 20 customers." },
+];
+
+const programmingLanguages = ["Java", "JavaScript", "SQL", "Python"];
+const technologies = ["React", "Node.js", "Express.js", "Spring", "Hibernate", "REST APIs", "Docker", "Git"];
+
 function CareerHighlights() {
   return (
     <section className="ind-shell ind-highlights" aria-labelledby="ind-highlights-title">
       <div className="ind-highlights-intro">
         <p className="ind-label">Career highlights</p>
         <h2 id="ind-highlights-title">Work with <em>measurable impact.</em></h2>
+        <a className="ind-career-profile" href="https://in.linkedin.com/in/shaileshdas12">View LinkedIn profile <span aria-hidden="true">↗</span></a>
       </div>
-      <dl className="ind-highlight-grid">
+      <div className="ind-career-history">
+        <h3 className="ind-label">Corporate experience</h3>
+        <ul className="ind-career-roles">
+          {careerRoles.map(({ company, role, focus }) => (
+            <li key={company}>
+              <h4>{company}</h4>
+              <p className="ind-career-role">{role}</p>
+              {focus && <p>{focus}</p>}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="ind-career-facts">
         <div>
-          <dt>Faster post-release bug finding</dt>
-          <dd><a href="#ind-tcrawl-notes" data-open="">42% <span aria-hidden="true">↗</span></a></dd>
+          <h3 className="ind-label">Programming languages</h3>
+          <ul className="ind-career-skills">
+            {programmingLanguages.map(language => <li key={language}>{language}</li>)}
+          </ul>
         </div>
         <div>
-          <dt>Less time spent on web posting</dt>
-          <dd><a href="#ind-company-highradius" data-open="">~40% <span aria-hidden="true">↗</span></a></dd>
+          <h3 className="ind-label">Technologies I’ve worked with</h3>
+          <ul className="ind-career-skills">
+            {technologies.map(technology => <li key={technology}>{technology}</li>)}
+          </ul>
         </div>
         <div>
-          <dt>Customers supported by backend automation</dt>
-          <dd><a href="#ind-company-highradius" data-open="">20+ <span aria-hidden="true">↗</span></a></dd>
+          <h3 className="ind-label">Education and recognition</h3>
+          <ul className="ind-career-credentials">
+            <li>B.Tech in Computer Engineering, KIIT Bhubaneswar</li>
+            <li>AWS Fundamentals: Going Cloud-Native</li>
+            <li>Microsoft MTA in Python programming</li>
+            <li>HighRadius Star Team Award and Highflyer of the Quarter</li>
+          </ul>
         </div>
-        <div>
-          <dt>Computer engineering</dt>
-          <dd>B.Tech</dd>
-        </div>
-      </dl>
+      </div>
     </section>
   );
 }
@@ -356,7 +384,7 @@ function DesignSystem() {
           </div>
           <div>
             <h3>Components and states</h3>
-            <p>Center the navigation pill and right-align the location, local time, résumé, and theme button. The theme starts with the device preference and remembers a manual choice. Employer tiles open descriptions on click, tap, or Enter. Project rows pair custom icons with a category and a result. Career figures link to their supporting project or employer details.</p>
+            <p>Center the navigation pill with the theme button beside Contact. Right-align the location, local time, and résumé. The theme starts with the device preference and remembers a manual choice. Employer tiles open descriptions on click, tap, or Enter. The career section pairs roles with skills and credentials.</p>
           </div>
           <div>
             <h3>Motion</h3>
